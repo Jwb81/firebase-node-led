@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html lang="en-us">
+
+<head>
+
+  <meta charset="UTF-8">
+  <title>CoderBay</title>
+
+  <!-- jQuery -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <!-- Bootstrap CDN-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+  <!-- Firebase Reference -->
+  <script src="https://www.gstatic.com/firebasejs/5.4.2/firebase.js"></script>
+  <script src="https://www.w3schools.com/lib/w3color.js"></script>
+
+  <!-- Styles -->
+  <link rel='stylesheet' href='../assets/css/style.css'>
+
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>RGB Color</h1>
+    <div class="">
+      <p>Active: <input type='checkbox' value='active' id='active'></p>
+      <p><input type="range" min="0" max="255" value="0" class="slider" id="redSlider"></p>
+      <p><input type="range" min="0" max="255" value="0" class="slider" id="greenSlider"></p>
+      <p><input type="range" min="0" max="255" value="0" class="slider" id="blueSlider"></p>
+    </div>
+    <div class="" style="background-color:black" id="colorShow">
+      <div></div>
+    </div>
+    <p>Or pick a color: <input type="color" id="pickColor"></p>
+  </div>
+
+
+
+
+
+  <!-- Script -->
+  <script src="../assets/javascript/logic.js"></script>
+
+</body>
+
+</html>
