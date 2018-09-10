@@ -24,6 +24,7 @@ ledGreen.digitalWrite(1); // Turn GREEN LED off
 ledBlue.digitalWrite(1); // Turn BLUE LED off
 
 http.listen(port); //listen to the specified port
+console.log('listening on port ' + port);
 
 function handler(req, res) { //what to do on requests to the specified port
     fs.readFile(__dirname + '/public/index.html', function (err, data) { //read file rgb.html in public folder
@@ -37,7 +38,6 @@ function handler(req, res) { //what to do on requests to the specified port
             'Content-Type': 'text/html'
         }); //write HTML
         res.write(data); //write data from rgb.html
-        console.log('listening on port ' + port);
         return res.end();
     });
 }
