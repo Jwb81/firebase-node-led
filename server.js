@@ -71,6 +71,8 @@ io.sockets.on('connection', function (socket) { // Web Socket Connection
         ledGreen.pwmWrite(greenRGB); //set GREEN LED to specified value
         ledBlue.pwmWrite(blueRGB); //set BLUE LED to specified value
     });
+
+    console.log('client connected');
 });
 
 process.on('SIGINT', function () { //on ctrl+c
