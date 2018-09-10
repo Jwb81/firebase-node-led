@@ -37,8 +37,8 @@ function handler(req, res) { //what to do on requests to the specified port
         res.writeHead(200, {
             'Content-Type': 'text/html'
         }); //write HTML
-        res.write(data); //write data from rgb.html
-        return res.end();
+        // res.write(data); //write data from rgb.html
+        return res.end(data);
     });
 }
 
