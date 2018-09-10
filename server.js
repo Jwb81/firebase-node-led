@@ -65,7 +65,7 @@ function turnOff() {
 
 io.sockets.on('connection', function (socket) { // Web Socket Connection
     socket.on('rgb', function (rgb, active) { //get light switch status from client (r, g, b, active)
-        console.log(rgb); 
+        // console.log(rgb); 
 
         //for common anode RGB LED  255 is fully off, and 0 is fully on, so we have to change the value from the client
         redRGB = 255 - parseInt(rgb.red);
@@ -75,16 +75,18 @@ io.sockets.on('connection', function (socket) { // Web Socket Connection
 
         if (!rgbActive) {
             turnOff();
-            return;
+        }
+        else {
+            ledRed.pwmWrite(redRGB); //set RED LED to specified value
+            ledGreen.pwmWrite(greenRGB); //set GREEN LED to specified value
+            ledBlue.pwmWrite(blueRGB); //set BLUE LED to specified value
         }
 
         console.log('----------------');
         console.log('active: ' + rgbActive);
         console.log("rgb: " + redRGB + ", " + greenRGB + ", " + blueRGB); //output converted to console
 
-        ledRed.pwmWrite(redRGB); //set RED LED to specified value
-        ledGreen.pwmWrite(greenRGB); //set GREEN LED to specified value
-        ledBlue.pwmWrite(blueRGB); //set BLUE LED to specified value
+        
     });
 
 });
