@@ -80,7 +80,7 @@ io.sockets.on('connection', function (socket) { // Web Socket Connection
 
         console.log('----------------');
         console.log('active: ' + rgbActive);
-        console.log("rbg: " + redRGB + ", " + greenRGB + ", " + blueRGB); //output converted to console
+        console.log("rgb: " + redRGB + ", " + greenRGB + ", " + blueRGB); //output converted to console
 
         ledRed.pwmWrite(redRGB); //set RED LED to specified value
         ledGreen.pwmWrite(greenRGB); //set GREEN LED to specified value

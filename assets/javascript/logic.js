@@ -25,7 +25,7 @@ var database = firebase.database();
 
 // FUNCTIONS
 var setData = function() {
-    database.ref("/rgb").set({
+    database.ref().set({
         red: rgb.red,
         green: rgb.green,
         blue: rgb.blue,
