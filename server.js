@@ -16,14 +16,16 @@ var Gpio = require('pigpio').Gpio, //include pigpio to interact with the GPIO
     blueRGB = 255, //set starting value of BLUE variable to off (255 for common anode)
     rgbActive = false;
 
+    var port = 8080;
+
 //RESET RGB LED
 ledRed.digitalWrite(1); // Turn RED LED off
 ledGreen.digitalWrite(1); // Turn GREEN LED off
 ledBlue.digitalWrite(1); // Turn BLUE LED off
 
-http.listen(8080); //listen to port 8080
+http.listen(port); //listen to the specified port
 
-function handler(req, res) { //what to do on requests to port 8080
+function handler(req, res) { //what to do on requests to the specified port
     fs.readFile(__dirname + '/public/index.html', function (err, data) { //read file rgb.html in public folder
         if (err) {
             res.writeHead(404, {
@@ -35,6 +37,7 @@ function handler(req, res) { //what to do on requests to port 8080
             'Content-Type': 'text/html'
         }); //write HTML
         res.write(data); //write data from rgb.html
+        console.log('listening on port ' + port);
         return res.end();
     });
 }
