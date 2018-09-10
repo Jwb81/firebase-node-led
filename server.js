@@ -21,10 +21,10 @@ var Gpio = require('pigpio').Gpio, //include pigpio to interact with the GPIO
 var port = 8080;
 
 app.use(express.static(__dirname));
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({
-    extended: false
-}))
+// app.use(bodyParser.json())
+// app.use(bodyParser.urlencoded({
+//     extended: false
+// }))
 
 
 //RESET RGB LED
