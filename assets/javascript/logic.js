@@ -69,39 +69,39 @@ connectionsRef.on("value", function (snap) {
 // --------------------------------------------------------------
 // At the page load and subsequent value changes, get a snapshot of the local data.
 // This function allows you to update your page in real-time when the values within the firebase node bidderData changes
-database.ref("/rgb").on("value", function (snapshot) {
-    var info = snapshot.val();
+// database.ref("/rgb").on("value", function (snapshot) {
+//     var info = snapshot.val();
 
-    // If Firebase has a highPrice and highBidder stored (first case)
-    if (snapshot.child("red").exists() &&
-        snapshot.child("green").exists() &&
-        snapshot.child("blue").exists() &&
-        snapshot.child("active").exists()) {
+//     // If Firebase has a highPrice and highBidder stored (first case)
+//     if (snapshot.child("red").exists() &&
+//         snapshot.child("green").exists() &&
+//         snapshot.child("blue").exists() &&
+//         snapshot.child("active").exists()) {
 
-        rgb.red = info.red; //Update the RED color according to the picker
-        rgb.green = info.green; //Update the GREEN color according to the picker
-        rgb.blue = info.blue; //Update the BLUE color according to the picker
+//         rgb.red = info.red; //Update the RED color according to the picker
+//         rgb.green = info.green; //Update the GREEN color according to the picker
+//         rgb.blue = info.blue; //Update the BLUE color according to the picker
 
-        colorShow.style.backgroundColor = rgb.toRgbString(); //update the "Current color"
-        
-        rSlider.value = rgb.red; //Update the RED slider position according to the picker
-        gSlider.value = rgb.green; //Update the GREEN slider position according to the picker
-        bSlider.value = rgb.blue; //Update the BLUE slider position according to the picker
+//         colorShow.style.backgroundColor = rgb.toRgbString(); //update the "Current color"
 
-        active = info.active;
-        document.getElementById('active').checked = active;
-    }
+//         rSlider.value = rgb.red; //Update the RED slider position according to the picker
+//         gSlider.value = rgb.green; //Update the GREEN slider position according to the picker
+//         bSlider.value = rgb.blue; //Update the BLUE slider position according to the picker
 
-    // Else Firebase doesn't have a highPrice/highBidder, so use the initial local values.
-    else {
-        console.log('Database needs created filled or created...');
+//         active = info.active;
+//         document.getElementById('active').checked = active;
+//     }
 
-    }
+//     // Else Firebase doesn't have a highPrice/highBidder, so use the initial local values.
+//     else {
+//         console.log('Database needs created filled or created...');
 
-    // If any errors are experienced, log them to console.
-}, function (errorObject) {
-    console.log("The read failed: " + errorObject.code);
-});
+//     }
+
+//     // If any errors are experienced, log them to console.
+// }, function (errorObject) {
+//     console.log("The read failed: " + errorObject.code);
+// });
 
 
 window.addEventListener("load", function () { //when page loads
