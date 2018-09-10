@@ -1,0 +1,23 @@
+{
+  "name": "firebase-node-led",
+  "version": "1.0.0",
+  "description": "Uses Firebase real-time database to update web pages and uses NodeJS to control an LED on a raspberry pi",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jwb81/firebase-node-led.git"
+  },
+  "author": "Jason Barnett",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jwb81/firebase-node-led/issues"
+  },
+  "homepage": "https://github.com/Jwb81/firebase-node-led#readme",
+  "dependencies": {
+    "socket.io": "^2.1.1"
+  }
+}
