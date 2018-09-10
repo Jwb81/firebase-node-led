@@ -1,46 +1,61 @@
-var http = require('http').createServer(handler); //require http server, and create server with function handler()
+var express = require('express');
+var app = express();
+var http = require('http').Server(app); //require http server, and create server with function handler()
 var fs = require('fs'); //require filesystem module
 var io = require('socket.io')(http) //require socket.io module and pass the http object (server)
 var Gpio = require('pigpio').Gpio, //include pigpio to interact with the GPIO
     ledRed = new Gpio(13, {
         mode: Gpio.OUTPUT
-    }), 
+    }),
     ledGreen = new Gpio(19, {
         mode: Gpio.OUTPUT
-    }), 
+    }),
     ledBlue = new Gpio(26, {
         mode: Gpio.OUTPUT
-    }), 
+    }),
     redRGB = 255, //set starting value of RED variable to off (255 for common anode)
     greenRGB = 255, //set starting value of GREEN variable to off (255 for common anode)
     blueRGB = 255, //set starting value of BLUE variable to off (255 for common anode)
     rgbActive = false;
 
-    var port = 8080;
+var port = 8080;
+
+app.use(express.static(__dirname));
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({
+    extended: false
+}))
+
 
 //RESET RGB LED
 ledRed.digitalWrite(1); // Turn RED LED off
 ledGreen.digitalWrite(1); // Turn GREEN LED off
 ledBlue.digitalWrite(1); // Turn BLUE LED off
 
-http.listen(port); //listen to the specified port
-console.log('listening on port ' + port);
+var server = http.listen(port, () => {
+    var host = server.address().address;
+    var port = server.address().port;
 
-function handler(req, res) { //what to do on requests to the specified port
-    fs.readFile(__dirname + '/public/index.html', function (err, data) { //read file rgb.html in public folder
-        if (err) {
-            res.writeHead(404, {
-                'Content-Type': 'text/html'
-            }); //display 404 on error
-            return res.end("404 Not Found");
-        }
-        res.writeHead(200, {
-            'Content-Type': 'text/html'
-        }); //write HTML
-        // res.write(data); //write data from rgb.html
-        return res.end(data);
-    });
-}
+    console.log('The bartender is listening on port %s', port);
+})
+// http.listen(port); //listen to the specified port
+// console.log('listening on port ' + port);
+
+// function handler(req, res) { //what to do on requests to the specified port
+//     fs.readFile(__dirname + '/public/index.html', function (err, data) { //read file rgb.html in public folder
+//         if (err) {
+//             res.writeHead(404, {
+//                 'Content-Type': 'text/html'
+//             }); //display 404 on error
+//             return res.end("404 Not Found");
+//         }
+//         res.writeHead(200, {
+//             'Content-Type': 'text/html'
+//         }); //write HTML
+//         // res.write(data); //write data from rgb.html
+//         return res.end(data);
+//     });
+// }
 
 function turnOff() {
     ledRed.digitalWrite(1); // Turn RED LED off
