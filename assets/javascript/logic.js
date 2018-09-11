@@ -92,9 +92,9 @@ database.ref().on("value", function (snapshot) {
         gSlider.value = rgb.green; //Update the GREEN slider position according to the picker
         bSlider.value = rgb.blue; //Update the BLUE slider position according to the picker
 
-        redNum.value = this.value;
-        greenNum.value = this.value;
-        blueNum.value = this.value;
+        redNum.value = rgb.red;
+        greenNum.value = rgb.green;
+        blueNum.value = rgb.blue;
 
         active = info.active;
         document.getElementById('active').checked = active;
@@ -164,6 +164,7 @@ window.addEventListener("load", function () { //when page loads
     });
 
     redNum.addEventListener('change', function() {
+        var val = parseInt(this.value);
         if (this.value < 0 || this.value > 255) {
             return;
         }
