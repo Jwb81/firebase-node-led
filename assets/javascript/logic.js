@@ -4,6 +4,7 @@ var active = false;
 var rSlider;
 var gSlider;
 var bSlider;
+var redNum, greenNum, blueNum;
 
 /* global moment firebase */
 
@@ -27,7 +28,7 @@ var database = firebase.database();
 
 
 // FUNCTIONS
-var setData = function() {
+var setData = function () {
     database.ref().set({
         red: rgb.red,
         green: rgb.green,
@@ -112,22 +113,28 @@ window.addEventListener("load", function () { //when page loads
     rSlider = document.getElementById("redSlider");
     gSlider = document.getElementById("greenSlider");
     bSlider = document.getElementById("blueSlider");
+    redNum = document.getElementById('redNum');
+    greenNum = document.getElementById('greenNum');
+    blueNum = document.getElementById('blueNum');
     var picker = document.getElementById("pickColor");
 
     rSlider.addEventListener("change", function () { //add event listener for when red slider changes
         rgb.red = this.value; //update the RED color according to the slider
+        redNum.value = this.value;
         colorShow.style.backgroundColor = rgb.toRgbString(); //update the "Current color"
         setData();
         socket.emit("rgb", rgb, active); //send the updated color to RGB LED via WebSocket
     });
     gSlider.addEventListener("change", function () { //add event listener for when green slider changes
         rgb.green = this.value; //update the GREEN color according to the slider
+        greenNum.value = this.value;
         colorShow.style.backgroundColor = rgb.toRgbString(); //update the "Current color"
         setData();
         socket.emit("rgb", rgb, active); //send the updated color to RGB LED via WebSocket
     });
     bSlider.addEventListener("change", function () { //add event listener for when blue slider changes
         rgb.blue = this.value; //update the BLUE color according to the slider
+        blueNum.value = this.value;
         colorShow.style.backgroundColor = rgb.toRgbString(); //update the "Current color"
         setData();
         socket.emit("rgb", rgb, active); //send the updated color to RGB LED via WebSocket
@@ -142,11 +149,49 @@ window.addEventListener("load", function () { //when page loads
         rSlider.value = rgb.red; //Update the RED slider position according to the picker
         gSlider.value = rgb.green; //Update the GREEN slider position according to the picker
         bSlider.value = rgb.blue; //Update the BLUE slider position according to the picker
-        
+
+        redNum.value = this.value;
+        greenNum.value = this.value;
+        blueNum.value = this.value;
+
         setData();
 
         socket.emit("rgb", rgb, active); //send the updated color to RGB LED via WebSocket
     });
+
+    redNum.addEventListener('change', function() {
+        if (this.value < 0 || this.value > 255) {
+            return;
+        }
+
+        rgb.red = this.value;
+        rSlider.value = this.value;
+        colorShow.style.backgroundColor = rgb.toRgbString(); //update the "Current color"
+        setData();
+        socket.emit("rgb", rgb, active); //send the updated color to RGB LED via WebSocket
+    })
+    greenNum.addEventListener('change', function() {
+        if (this.value < 0 || this.value > 255) {
+            return;
+        }
+
+        rgb.green = this.value;
+        gSlider.value = this.value;
+        colorShow.style.backgroundColor = rgb.toRgbString(); //update the "Current color"
+        setData();
+        socket.emit("rgb", rgb, active); //send the updated color to RGB LED via WebSocket
+    })
+    blueNum.addEventListener('change', function() {
+        if (this.value < 0 || this.value > 255) {
+            return;
+        }
+
+        rgb.blue = this.value;
+        bSlider.value = this.value;
+        colorShow.style.backgroundColor = rgb.toRgbString(); //update the "Current color"
+        setData();
+        socket.emit("rgb", rgb, active); //send the updated color to RGB LED via WebSocket
+    })
 
 
     activeCheckbox.addEventListener('change', function () {
