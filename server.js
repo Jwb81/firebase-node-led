@@ -115,7 +115,7 @@ io.sockets.on('connection', function (socket) { // Web Socket Connection
         serialPort.write(arduinoCommand, function(err) {
             if (err)   
                 console.log(err);
-            else 
+            // else 
                 // console.log('success\n');
         })
         // console.log('----------------');
