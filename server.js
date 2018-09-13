@@ -86,6 +86,14 @@ function turnOff() {
     ledBlue.digitalWrite(off); // Turn BLUE LED off
 }
 
+function padNumber(num, size) {
+    var str = num + "";
+    while (str.length < size)
+        str = "0" + str;
+    
+    return str;
+}
+
 io.sockets.on('connection', function (socket) { // Web Socket Connection
     socket.on('rgb', function (rgb, active) { //get light switch status from client (r, g, b, active)
         // console.log(rgb); 
@@ -96,19 +104,23 @@ io.sockets.on('connection', function (socket) { // Web Socket Connection
         blueRGB = parseInt(rgb.blue);
         rgbActive = active;
 
+
+
+        var arduinoCommand = '<' + padNumber(redRGB, 3) + ',' +
+                                padNumber(greenRGB, 3) + ',' +
+                                padNumber(blueRGB, 3) + ',';
+
         if (!rgbActive) {
             turnOff();
+            arduinoCommand += '0>';
         }
         else {
             ledRed.pwmWrite(redRGB); //set RED LED to specified value
             ledGreen.pwmWrite(greenRGB); //set GREEN LED to specified value
             ledBlue.pwmWrite(blueRGB); //set BLUE LED to specified value
+            arduinoCommand += '1>';
         }
 
-        var arduinoCommand = '<' + redRGB + ',' +
-                            greenRGB + ',' +
-                            blueRGB + ',' + 
-                            rgbActive + '>';
 
         console.log(arduinoCommand);
         serialPort.write(arduinoCommand, function(err) {
