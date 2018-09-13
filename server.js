@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app); //require http server, and create server with function handler()
 var fs = require('fs'); //require filesystem module
+var serialport = require('serialport');
 var io = require('socket.io')(http) //require socket.io module and pass the http object (server)
 var Gpio = require('pigpio').Gpio, //include pigpio to interact with the GPIO
     ledRed = new Gpio(17, {
@@ -59,6 +60,22 @@ var server = http.listen(port, () => {
 //     });
 // }
 
+var serialPort = new serialport('COM3', {
+    baudRate: 9600,
+    // parser: serialport.parsers.readLine("\n")
+},
+function (err) {
+    if (err) {
+        //Scale.connectScale();
+        return console.log('Error: ', err.message);
+
+    } else {
+        console.log("Serial port on COM3 connected!");
+        // Scale.attachHandlers();
+    }
+}
+)
+
 function turnOff() {
     ledRed.digitalWrite(off); // Turn RED LED off
     ledGreen.digitalWrite(off); // Turn GREEN LED off
@@ -84,6 +101,17 @@ io.sockets.on('connection', function (socket) { // Web Socket Connection
             ledBlue.pwmWrite(blueRGB); //set BLUE LED to specified value
         }
 
+        var arduinoCommand = '<' + redRGB + ',' +
+                            greenRGB + ',' +
+                            blueRGB + ',' + 
+                            rgbActive + '>';
+
+        port.write(arduinoCommand, function(err) {
+            if (err)   
+                console.log(err);
+            else 
+                console.log('success\n');
+        })
         // console.log('----------------');
         // console.log('active: ' + rgbActive);
         // console.log("rgb: " + redRGB + ", " + greenRGB + ", " + blueRGB); //output converted to console
