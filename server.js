@@ -4,21 +4,23 @@ var http = require('http').Server(app); //require http server, and create server
 var fs = require('fs'); //require filesystem module
 var io = require('socket.io')(http) //require socket.io module and pass the http object (server)
 var Gpio = require('pigpio').Gpio, //include pigpio to interact with the GPIO
-    ledRed = new Gpio(13, {
+    ledRed = new Gpio(17, {
         mode: Gpio.OUTPUT
     }),
-    ledGreen = new Gpio(19, {
+    ledGreen = new Gpio(22, {
         mode: Gpio.OUTPUT
     }),
-    ledBlue = new Gpio(26, {
+    ledBlue = new Gpio(24, {
         mode: Gpio.OUTPUT
     }),
-    redRGB = 255, //set starting value of RED variable to off (255 for common anode)
-    greenRGB = 255, //set starting value of GREEN variable to off (255 for common anode)
-    blueRGB = 255, //set starting value of BLUE variable to off (255 for common anode)
+    redRGB = 0, //set starting value of RED variable to off (255 for common anode)
+    greenRGB = 0, //set starting value of GREEN variable to off (255 for common anode)
+    blueRGB = 0, //set starting value of BLUE variable to off (255 for common anode)
     rgbActive = false;
 
 var port = 8080;
+var on = 1;
+var off = 0;
 
 app.use(express.static(__dirname));
 // app.use(bodyParser.json())
@@ -28,9 +30,9 @@ app.use(express.static(__dirname));
 
 
 //RESET RGB LED
-ledRed.digitalWrite(1); // Turn RED LED off
-ledGreen.digitalWrite(1); // Turn GREEN LED off
-ledBlue.digitalWrite(1); // Turn BLUE LED off
+ledRed.digitalWrite(off); // Turn RED LED off
+ledGreen.digitalWrite(off); // Turn GREEN LED off
+ledBlue.digitalWrite(off); // Turn BLUE LED off
 
 var server = http.listen(port, () => {
     var host = server.address().address;
@@ -58,9 +60,9 @@ var server = http.listen(port, () => {
 // }
 
 function turnOff() {
-    ledRed.digitalWrite(1); // Turn RED LED off
-    ledGreen.digitalWrite(1); // Turn GREEN LED off
-    ledBlue.digitalWrite(1); // Turn BLUE LED off
+    ledRed.digitalWrite(off); // Turn RED LED off
+    ledGreen.digitalWrite(off); // Turn GREEN LED off
+    ledBlue.digitalWrite(off); // Turn BLUE LED off
 }
 
 io.sockets.on('connection', function (socket) { // Web Socket Connection
@@ -68,9 +70,9 @@ io.sockets.on('connection', function (socket) { // Web Socket Connection
         // console.log(rgb); 
 
         //for common anode RGB LED  255 is fully off, and 0 is fully on, so we have to change the value from the client
-        redRGB = 255 - parseInt(rgb.red);
-        greenRGB = 255 - parseInt(rgb.green);
-        blueRGB = 255 - parseInt(rgb.blue);
+        redRGB = parseInt(rgb.red);
+        greenRGB = parseInt(rgb.green);
+        blueRGB = parseInt(rgb.blue);
         rgbActive = active;
 
         if (!rgbActive) {
@@ -92,8 +94,8 @@ io.sockets.on('connection', function (socket) { // Web Socket Connection
 });
 
 process.on('SIGINT', function () { //on ctrl+c
-    ledRed.digitalWrite(1); // Turn RED LED off
-    ledGreen.digitalWrite(1); // Turn GREEN LED off
-    ledBlue.digitalWrite(1); // Turn BLUE LED off
+    ledRed.digitalWrite(off); // Turn RED LED off
+    ledGreen.digitalWrite(off); // Turn GREEN LED off
+    ledBlue.digitalWrite(off); // Turn BLUE LED off
     process.exit(); //exit completely
 });
