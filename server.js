@@ -60,21 +60,30 @@ var server = http.listen(port, () => {
 //     });
 // }
 
+<<<<<<< HEAD
 var serialPort = new serialport('/dev/ttyACM0', {
+=======
+
+var serialPort = new serialport('COM3', {
+>>>>>>> cbc8a9b8720170dd1d18f9bc7f92e782afb16a2d
     baudRate: 9600,
     // parser: serialport.parsers.readLine("\n")
-},
-function (err) {
-    if (err) {
-        //Scale.connectScale();
-        return console.log('Error: ', err.message);
+}, function (err) {
+        if (err) {
+            //Scale.connectScale();
+            return console.log('Error: ', err.message);
 
-    } else {
-        console.log("Serial port on COM3 connected!");
-        // Scale.attachHandlers();
+        } else {
+            console.log("Serial port on COM3 connected!");
+            // Scale.attachHandlers();
+        }
     }
-}
 )
+
+serialPort.on('data', function (data) {
+    var res = data.toString();
+    console.log(res);
+})
 
 function turnOff() {
     ledRed.digitalWrite(off); // Turn RED LED off
@@ -106,11 +115,12 @@ io.sockets.on('connection', function (socket) { // Web Socket Connection
                             blueRGB + ',' + 
                             rgbActive + '>';
 
+        console.log(arduinoCommand);
         serialPort.write(arduinoCommand, function(err) {
             if (err)   
                 console.log(err);
             else 
-                console.log('success\n');
+                // console.log('success\n');
         })
         // console.log('----------------');
         // console.log('active: ' + rgbActive);
