@@ -60,8 +60,12 @@ var server = http.listen(port, () => {
 //     });
 // }
 
+<<<<<<< HEAD
+var serialPort = new serialport('/dev/ttyACM0', {
+=======
 
 var serialPort = new serialport('COM3', {
+>>>>>>> cbc8a9b8720170dd1d18f9bc7f92e782afb16a2d
     baudRate: 9600,
     // parser: serialport.parsers.readLine("\n")
 }, function (err) {
