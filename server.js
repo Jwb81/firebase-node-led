@@ -106,7 +106,7 @@ io.sockets.on('connection', function (socket) { // Web Socket Connection
                             blueRGB + ',' + 
                             rgbActive + '>';
 
-        port.write(arduinoCommand, function(err) {
+        serialPort.write(arduinoCommand, function(err) {
             if (err)   
                 console.log(err);
             else 
