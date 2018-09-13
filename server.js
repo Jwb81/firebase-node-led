@@ -2,7 +2,6 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app); //require http server, and create server with function handler()
 var fs = require('fs'); //require filesystem module
-var serialport = require('serialport');
 var io = require('socket.io')(http) //require socket.io module and pass the http object (server)
 var Gpio = require('pigpio').Gpio, //include pigpio to interact with the GPIO
     ledRed = new Gpio(17, {
@@ -60,38 +59,11 @@ var server = http.listen(port, () => {
 //     });
 // }
 
-var serialPort = new serialport('/dev/ttyACM0', {
-    baudRate: 9600,
-    // parser: serialport.parsers.readLine("\n")
-}, function (err) {
-        if (err) {
-            //Scale.connectScale();
-            return console.log('Error: ', err.message);
-
-        } else {
-            console.log("Serial port on COM3 connected!");
-            // Scale.attachHandlers();
-        }
-    }
-)
-
-serialPort.on('data', function (data) {
-    var res = data.toString();
-    console.log(res);
-})
 
 function turnOff() {
     ledRed.digitalWrite(off); // Turn RED LED off
     ledGreen.digitalWrite(off); // Turn GREEN LED off
     ledBlue.digitalWrite(off); // Turn BLUE LED off
-}
-
-function padNumber(num, size) {
-    var str = num + "";
-    while (str.length < size)
-        str = "0" + str;
-    
-    return str;
 }
 
 io.sockets.on('connection', function (socket) { // Web Socket Connection
@@ -105,35 +77,15 @@ io.sockets.on('connection', function (socket) { // Web Socket Connection
         rgbActive = active;
 
 
-
-        var arduinoCommand = '<' + padNumber(redRGB, 3) + ',' +
-                                padNumber(greenRGB, 3) + ',' +
-                                padNumber(blueRGB, 3) + ',';
-
         if (!rgbActive) {
             turnOff();
-            arduinoCommand += '0>';
         }
         else {
             ledRed.pwmWrite(redRGB); //set RED LED to specified value
             ledGreen.pwmWrite(greenRGB); //set GREEN LED to specified value
             ledBlue.pwmWrite(blueRGB); //set BLUE LED to specified value
-            arduinoCommand += '1>';
         }
 
-
-        console.log(arduinoCommand);
-        serialPort.write(arduinoCommand, function(err) {
-            if (err)   
-                console.log(err);
-            // else 
-                // console.log('success\n');
-        })
-        // console.log('----------------');
-        // console.log('active: ' + rgbActive);
-        // console.log("rgb: " + redRGB + ", " + greenRGB + ", " + blueRGB); //output converted to console
-
-        
     });
 
 });
