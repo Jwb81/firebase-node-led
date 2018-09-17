@@ -5,6 +5,7 @@ var rSlider;
 var gSlider;
 var bSlider;
 var redNum, greenNum, blueNum;
+var password;
 
 let allInputs = $(':input');
 Array.from(allInputs).forEach(element => {
@@ -12,18 +13,8 @@ Array.from(allInputs).forEach(element => {
         element.setAttribute('disabled', 'disabled');
     }
 });
-console.log(allInputs);
-$('#password-submit').on('click', function () {
-    let pass = $('#password').val();
 
-    if (pass == 'Laura') {
-        Array.from(allInputs).forEach(element => {
-            element.removeAttribute('disabled');
-        });
 
-        $('#pass').remove();
-    }
-})
 
 /* global moment firebase */
 
@@ -99,7 +90,10 @@ database.ref().on("value", function (snapshot) {
     if (snapshot.child("red").exists() &&
         snapshot.child("green").exists() &&
         snapshot.child("blue").exists() &&
-        snapshot.child("active").exists()) {
+        snapshot.child("active").exists() &&
+        snapchat.child("password".exists())) {
+        
+        password = info.password;
 
         rgb.red = info.red; //Update the RED color according to the picker
         rgb.green = info.green; //Update the GREEN color according to the picker
@@ -129,6 +123,20 @@ database.ref().on("value", function (snapshot) {
 }, function (errorObject) {
     console.log("The read failed: " + errorObject.code);
 });
+
+
+
+$('#password-submit').on('click', function () {
+    let pass = $('#password').val();
+
+    if (pass == password) {
+        Array.from(allInputs).forEach(element => {
+            element.removeAttribute('disabled');
+        });
+
+        $('#pass').remove();
+    }
+})
 
 
 window.addEventListener("load", function () { //when page loads
