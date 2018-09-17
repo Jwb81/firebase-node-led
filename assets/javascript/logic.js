@@ -6,6 +6,25 @@ var gSlider;
 var bSlider;
 var redNum, greenNum, blueNum;
 
+let allInputs = $(':input');
+Array.from(allInputs).forEach(element => {
+    if (element.id != 'password' && element.id != 'password-submit') {
+        element.setAttribute('disabled', 'disabled');
+    }
+});
+console.log(allInputs);
+$('#password-submit').on('click', function () {
+    let pass = $('#password').val();
+
+    if (pass == 'Laura') {
+        Array.from(allInputs).forEach(element => {
+            element.removeAttribute('disabled');
+        });
+
+        $('#pass').remove();
+    }
+})
+
 /* global moment firebase */
 
 // Initialize Firebase
@@ -163,7 +182,7 @@ window.addEventListener("load", function () { //when page loads
         socket.emit("rgb", rgb, active); //send the updated color to RGB LED via WebSocket
     });
 
-    redNum.addEventListener('change', function() {
+    redNum.addEventListener('change', function () {
         var val = parseInt(this.value);
         if (this.value < 0 || this.value > 255) {
             return;
@@ -175,7 +194,7 @@ window.addEventListener("load", function () { //when page loads
         setData();
         socket.emit("rgb", rgb, active); //send the updated color to RGB LED via WebSocket
     })
-    greenNum.addEventListener('change', function() {
+    greenNum.addEventListener('change', function () {
         if (this.value < 0 || this.value > 255) {
             return;
         }
@@ -186,7 +205,7 @@ window.addEventListener("load", function () { //when page loads
         setData();
         socket.emit("rgb", rgb, active); //send the updated color to RGB LED via WebSocket
     })
-    blueNum.addEventListener('change', function() {
+    blueNum.addEventListener('change', function () {
         if (this.value < 0 || this.value > 255) {
             return;
         }
