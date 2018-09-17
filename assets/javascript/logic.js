@@ -48,7 +48,7 @@ var setData = function () {
         active: active,
         password: password
     }
-    console.log(obj);
+    // console.log(obj);
     database.ref().set(obj)
 }
 
