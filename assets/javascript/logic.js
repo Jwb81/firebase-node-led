@@ -39,12 +39,17 @@ var database = firebase.database();
 
 // FUNCTIONS
 var setData = function () {
-    database.ref().set({
+    // console.log(rgb.red);
+    // console.log(password);
+    var obj = {
         red: rgb.red,
         green: rgb.green,
         blue: rgb.blue,
-        active: active
-    })
+        active: active,
+        password: password
+    }
+    console.log(obj);
+    database.ref().set(obj)
 }
 
 // connectionsRef references a specific location in our database.
