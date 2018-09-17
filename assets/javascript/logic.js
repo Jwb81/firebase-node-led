@@ -91,7 +91,7 @@ database.ref().on("value", function (snapshot) {
         snapshot.child("green").exists() &&
         snapshot.child("blue").exists() &&
         snapshot.child("active").exists() &&
-        snapshot.child("password".exists())) {
+        snapshot.child("password").exists()) {
         
         password = info.password;
 
