@@ -199,7 +199,7 @@ window.addEventListener("load", function () { //when page loads
         var val = parseInt(this.value);
         $(this).removeClass('input-error');
 
-        if (this.value < 0 || this.value > 255 || (!parseInt(this.value) && this.value !== '0')) {
+        if (this.value < 0 || this.value > 255 || isNaN(this.value)) {
             $(this).addClass('input-error');
             console.log('NaN');
             return;
@@ -214,7 +214,7 @@ window.addEventListener("load", function () { //when page loads
     greenNum.addEventListener('change', function () {
         $(this).removeClass('input-error');
 
-        if (this.value < 0 || this.value > 255 || (!parseInt(this.value) && this.value !== '0')) {
+        if (this.value < 0 || this.value > 255 || isNaN(this.value)) {
             $(this).addClass('input-error');
             console.log('NaN');
             return;
@@ -229,7 +229,7 @@ window.addEventListener("load", function () { //when page loads
     blueNum.addEventListener('change', function () {
         $(this).removeClass('input-error');
 
-        if (this.value < 0 || this.value > 255 || (!parseInt(this.value) && this.value !== '0')) {
+        if (this.value < 0 || this.value > 255 || isNaN(this.value)) {
             $(this).addClass('input-error');
             console.log('NaN');
             return;
@@ -238,6 +238,9 @@ window.addEventListener("load", function () { //when page loads
         rgb.blue = this.value;
         bSlider.value = this.value;
         colorShow.style.backgroundColor = rgb.toRgbString(); //update the "Current color"
+        
+        console.log('setting data');
+
         setData();
         socket.emit("rgb", rgb, active); //send the updated color to RGB LED via WebSocket
     })
