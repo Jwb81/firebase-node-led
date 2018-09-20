@@ -197,7 +197,11 @@ window.addEventListener("load", function () { //when page loads
 
     redNum.addEventListener('change', function () {
         var val = parseInt(this.value);
-        if (this.value < 0 || this.value > 255) {
+        $(this).removeClass('input-error');
+
+        if (this.value < 0 || this.value > 255 || (!parseInt(this.value) && this.value !== '0')) {
+            $(this).addClass('input-error');
+            console.log('NaN');
             return;
         }
 
@@ -208,7 +212,11 @@ window.addEventListener("load", function () { //when page loads
         socket.emit("rgb", rgb, active); //send the updated color to RGB LED via WebSocket
     })
     greenNum.addEventListener('change', function () {
-        if (this.value < 0 || this.value > 255) {
+        $(this).removeClass('input-error');
+
+        if (this.value < 0 || this.value > 255 || (!parseInt(this.value) && this.value !== '0')) {
+            $(this).addClass('input-error');
+            console.log('NaN');
             return;
         }
 
@@ -219,7 +227,11 @@ window.addEventListener("load", function () { //when page loads
         socket.emit("rgb", rgb, active); //send the updated color to RGB LED via WebSocket
     })
     blueNum.addEventListener('change', function () {
-        if (this.value < 0 || this.value > 255) {
+        $(this).removeClass('input-error');
+
+        if (this.value < 0 || this.value > 255 || (!parseInt(this.value) && this.value !== '0')) {
+            $(this).addClass('input-error');
+            console.log('NaN');
             return;
         }
 

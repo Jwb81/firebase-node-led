@@ -7,6 +7,11 @@ body {
   font-family: 'Trade Winds';
 }
 
+.input-error {
+  border: 3px solid rgba(255,0,0,0.4);
+  color: red;
+}
+
 .rgb-sliders {
   background-color: #ddd;
   padding: 10px;
