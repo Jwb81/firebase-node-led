@@ -7,12 +7,12 @@ var bSlider;
 var redNum, greenNum, blueNum;
 var password;
 
-let allInputs = $(':input');
-Array.from(allInputs).forEach(element => {
-    if (element.id != 'password' && element.id != 'password-submit') {
-        element.setAttribute('disabled', 'disabled');
-    }
-});
+// let allInputs = $(':input');
+// Array.from(allInputs).forEach(element => {
+//     if (element.id != 'password' && element.id != 'password-submit') {
+//         element.setAttribute('disabled', 'disabled');
+//     }
+// });
 
 
 
@@ -49,7 +49,7 @@ var setData = function () {
         password: password
     }
     // console.log(obj);
-    database.ref().set(obj)
+    database.ref().update(obj)
 }
 
 // connectionsRef references a specific location in our database.
