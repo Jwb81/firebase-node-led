@@ -6,6 +6,7 @@ var gSlider;
 var bSlider;
 var redNum, greenNum, blueNum;
 var password;
+let lightGroup = [];    // holds all of the checked light groups
 
 // let allInputs = $(':input');
 // Array.from(allInputs).forEach(element => {
@@ -97,7 +98,7 @@ database.ref().on("value", function (snapshot) {
         snapshot.child("blue").exists() &&
         snapshot.child("active").exists() &&
         snapshot.child("password").exists()) {
-        
+
         password = info.password;
 
         rgb.red = info.red; //Update the RED color according to the picker
@@ -129,7 +130,54 @@ database.ref().on("value", function (snapshot) {
     console.log("The read failed: " + errorObject.code);
 });
 
+// do something with new lighting groups and 
+database.ref('/lighting-groups').on('value', function (snap) {
+    var nodes = snap.val();
 
+    console.log(Object.keys(nodes).length);
+    for (var i = 0; i < Object.keys(nodes).length; i++) {
+        var input = $('<input>')
+            .addClass('lighting-group-checkbox')
+            .attr('type', 'checkbox')
+            .attr('data-light-id', i)
+
+        var span = $('<span>')
+            .addClass('lighting-group-name')
+            .text(
+                nodes[i].room + ' (' +
+                nodes[i].rgb.red + ',' +
+                nodes[i].rgb.green + ',' +
+                nodes[i].rgb.blue + ')'
+            )
+
+        $('#lighting-groups')
+                .append(input)
+                .append(span)
+                .append('<br />')
+    }
+
+
+}, function (errorObject) {
+    console.log("The read failed: " + errorObject.code);
+});
+
+
+$('#lighting-groups').on('click', '.lighting-group-checkbox', function() {
+    let val = $(this).data('light-id');
+    let index = lightGroup.indexOf(val);
+
+    if (index == -1)
+        lightGroup = lightGroup.concat(val);
+    else
+        lightGroup.splice(index, 1);
+
+    console.log(lightGroup);
+})
+
+// unlock admin privileges by clicking on the header
+$('#header-unlock-admin').on('click', function () {
+    $('#admin-stuff').toggle('hide');
+})
 
 $('#password-submit').on('click', function () {
     let pass = $('#password').val();
@@ -141,6 +189,10 @@ $('#password-submit').on('click', function () {
 
         $('#pass').remove();
     }
+})
+
+$('#set-background').on('click', function () {
+    $('body').css('background-color', 'rgb(' + rgb.red + ',' + rgb.green + ',' + rgb.blue + ')')
 })
 
 
@@ -159,21 +211,21 @@ window.addEventListener("load", function () { //when page loads
         redNum.value = this.value;
         colorShow.style.backgroundColor = rgb.toRgbString(); //update the "Current color"
         setData();
-        socket.emit("rgb", rgb, active); //send the updated color to RGB LED via WebSocket
+        socket.emit("rgb", rgb, active, lightGroup); //send the updated color to RGB LED via WebSocket
     });
     gSlider.addEventListener("change", function () { //add event listener for when green slider changes
         rgb.green = this.value; //update the GREEN color according to the slider
         greenNum.value = this.value;
         colorShow.style.backgroundColor = rgb.toRgbString(); //update the "Current color"
         setData();
-        socket.emit("rgb", rgb, active); //send the updated color to RGB LED via WebSocket
+        socket.emit("rgb", rgb, active, lightGroup); //send the updated color to RGB LED via WebSocket
     });
     bSlider.addEventListener("change", function () { //add event listener for when blue slider changes
         rgb.blue = this.value; //update the BLUE color according to the slider
         blueNum.value = this.value;
         colorShow.style.backgroundColor = rgb.toRgbString(); //update the "Current color"
         setData();
-        socket.emit("rgb", rgb, active); //send the updated color to RGB LED via WebSocket
+        socket.emit("rgb", rgb, active, lightGroup); //send the updated color to RGB LED via WebSocket
     });
     picker.addEventListener("input", function () { //add event listener for when colorpicker changes
         rgb.red = w3color(this.value).red; //Update the RED color according to the picker
@@ -192,7 +244,7 @@ window.addEventListener("load", function () { //when page loads
 
         setData();
 
-        socket.emit("rgb", rgb, active); //send the updated color to RGB LED via WebSocket
+        socket.emit("rgb", rgb, active, lightGroup); //send the updated color to RGB LED via WebSocket
     });
 
     redNum.addEventListener('change', function () {
@@ -209,7 +261,7 @@ window.addEventListener("load", function () { //when page loads
         rSlider.value = this.value;
         colorShow.style.backgroundColor = rgb.toRgbString(); //update the "Current color"
         setData();
-        socket.emit("rgb", rgb, active); //send the updated color to RGB LED via WebSocket
+        socket.emit("rgb", rgb, active, lightGroup); //send the updated color to RGB LED via WebSocket
     })
     greenNum.addEventListener('change', function () {
         $(this).removeClass('input-error');
@@ -224,7 +276,7 @@ window.addEventListener("load", function () { //when page loads
         gSlider.value = this.value;
         colorShow.style.backgroundColor = rgb.toRgbString(); //update the "Current color"
         setData();
-        socket.emit("rgb", rgb, active); //send the updated color to RGB LED via WebSocket
+        socket.emit("rgb", rgb, active, lightGroup); //send the updated color to RGB LED via WebSocket
     })
     blueNum.addEventListener('change', function () {
         $(this).removeClass('input-error');
@@ -238,20 +290,19 @@ window.addEventListener("load", function () { //when page loads
         rgb.blue = this.value;
         bSlider.value = this.value;
         colorShow.style.backgroundColor = rgb.toRgbString(); //update the "Current color"
-        
+
         console.log('setting data');
 
         setData();
-        socket.emit("rgb", rgb, active); //send the updated color to RGB LED via WebSocket
+        socket.emit("rgb", rgb, active, lightGroup); //send the updated color to RGB LED via WebSocket
     })
 
 
     activeCheckbox.addEventListener('change', function () {
         active = this.checked;
         setData();
-        socket.emit('rgb', rgb, active);
+        socket.emit('rgb', rgb, active, lightGroup);
     })
-
 
 
 });

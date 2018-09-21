@@ -27,7 +27,7 @@
 <body>
 
   <div class="container">
-    <h1 class='header'>Google Firebase & NodeJS</h1>
+    <h1 class='header' id='header-unlock-admin'>Google Firebase & NodeJS</h1>
     <div class="row">
       <div class="col-12">
         <div class="rgb-sliders">
@@ -38,7 +38,10 @@
           <hr>
           Color preview:
           <div class="" style="background-color:black" id="colorShow">
-            <div></div>
+          </div>
+          <div>
+            Like the color in the box above?
+            <input id='set-background' type='button' class='btn btn-info' value='Set as background'>
           </div>
           <p>Or pick a color: <input type="color" id="pickColor"></p>
         </div>
@@ -85,11 +88,13 @@
           <p><span class='inputs'>Blue: </span><input type="text" id="blueNum"></p> -->
 
       </div>
-      <div class="col-md-6 col-xs-12 text-center light-groups border-top-small">
+      <div class="col-md-6 col-xs-12 text-center border-top-small">
         <h6><em>Lighting Groups</em></h6>
-        <input type='checkbox'> Jason's Room <br />
-        <input type='checkbox'> Living Room <br />
-        <input type='checkbox'> Basement <br />
+        <div id="lighting-groups">
+            <!-- <input type='checkbox'><span class='lighting-group-name'>Jason's Room 16ft</span><br />
+            <input type='checkbox'><span class='lighting-group-name'>Jason's Room 5ft</span><br />
+            <input type='checkbox'><span class='lighting-group-name'>Living Room</span><br /> -->
+        </div>
       </div>
     </div>
 
@@ -100,8 +105,21 @@
       </div>
 
       <div class="timers col-md-6 col-xs-12 border-top-small text-center">
-          <h6><em>Lighting Effects</em></h6>
+        <h6><em>Lighting Effects</em></h6>
 
+      </div>
+    </div>
+
+    <div id="admin-stuff" class='row rgb-sliders' style='display:none;'>
+
+      <div class=" col-md-6 col-xs-12 border-right-md text-center">
+        <h6><em>Favorites</em></h6>
+        <p>Hello World</p>
+      </div>
+
+      <div class=" col-md-6 col-xs-12 border-top-small text-center">
+        <h6><em>Lighting Effects</em></h6>
+        <p>Hello World</p>
       </div>
     </div>
 

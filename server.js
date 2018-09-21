@@ -18,7 +18,8 @@ var Gpio = require('pigpio').Gpio, //include pigpio to interact with the GPIO
     blueRGB = 0, //set starting value of BLUE variable to off (255 for common anode)
     rgbActive = false;
 
-var port = 8080;
+// var port = 8080;
+var port = 1500;
 var on = 1;
 var off = 0;
 
@@ -66,8 +67,23 @@ function turnOff() {
     ledBlue.digitalWrite(off); // Turn BLUE LED off
 }
 
+function onBoardLED(rgb, active) {
+    if (!active) {
+        turnOff();
+    }
+    else {
+        ledRed.pwmWrite(rgb.red); //set RED LED to specified value
+        ledGreen.pwmWrite(rgb.green); //set GREEN LED to specified value
+        ledBlue.pwmWrite(rgb.blue); //set BLUE LED to specified value
+    }
+}
+
+function remoteLED(rgb, active) {
+
+}
+
 io.sockets.on('connection', function (socket) { // Web Socket Connection
-    socket.on('rgb', function (rgb, active) { //get light switch status from client (r, g, b, active)
+    socket.on('rgb', function (rgb, active, lightGroup) { //get light switch status from client (r, g, b, active)
         // console.log(rgb); 
 
         //for common anode RGB LED  255 is fully off, and 0 is fully on, so we have to change the value from the client
@@ -76,15 +92,14 @@ io.sockets.on('connection', function (socket) { // Web Socket Connection
         blueRGB = parseInt(rgb.blue);
         rgbActive = active;
 
+        for (var i = 0; i < lightGroup.length; i++) {
+            if (lightGroup[i] == 0) {
+                onBoardLED(rgb, active);
+            }
+        }
 
-        if (!rgbActive) {
-            turnOff();
-        }
-        else {
-            ledRed.pwmWrite(redRGB); //set RED LED to specified value
-            ledGreen.pwmWrite(greenRGB); //set GREEN LED to specified value
-            ledBlue.pwmWrite(blueRGB); //set BLUE LED to specified value
-        }
+
+        
 
     });
 
