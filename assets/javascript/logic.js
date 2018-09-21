@@ -174,7 +174,7 @@ $('#select-all-lights').on('click', function() {
     }
 
 
-    console.log(lightGroup);
+    // console.log(lightGroup);
 })
 
 $('#select-none-lights').on('click', function() {
@@ -182,8 +182,8 @@ $('#select-none-lights').on('click', function() {
     
     // clear the lightGroup array
     lightGroup = [];
-    
-    console.log(lightGroup);
+
+    // console.log(lightGroup);
 })
 
 // add a lighting group to the active array when it is checked
@@ -196,7 +196,7 @@ $('#lighting-groups').on('change', '.lighting-group-checkbox', function() {
     else
         lightGroup.splice(index, 1);
 
-    console.log(lightGroup);
+    // console.log(lightGroup);
 })
 
 // unlock admin privileges by clicking on the header
