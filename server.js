@@ -36,8 +36,7 @@ com.on('error', function(err) {
 })
 
 
-// var port = 8080;
-var port = 1500;
+var port = 8080;
 var on = 1;
 var off = 0;
 
