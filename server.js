@@ -18,6 +18,24 @@ var Gpio = require('pigpio').Gpio, //include pigpio to interact with the GPIO
     blueRGB = 0, //set starting value of BLUE variable to off (255 for common anode)
     rgbActive = false;
 
+// for communicating with the attached Arduino over serial comm
+var SerialPort = require('serialport');
+var com = new SerialPort('/dev/ttyACM0', {
+    baudRate: 115200,
+}, function (err) {
+    if (err)
+        return console.log('Error: ', err.message);
+})
+
+com.on('data', function(data) {
+	console.log('Data: ', data.toString());
+})
+
+com.on('error', function(err) {
+	console.log('Error: ', err.message);
+})
+
+
 // var port = 8080;
 var port = 1500;
 var on = 1;
@@ -70,16 +88,24 @@ function turnOff() {
 function onBoardLED(rgb, active) {
     if (!active) {
         turnOff();
-    }
-    else {
+    } else {
         ledRed.pwmWrite(rgb.red); //set RED LED to specified value
         ledGreen.pwmWrite(rgb.green); //set GREEN LED to specified value
         ledBlue.pwmWrite(rgb.blue); //set BLUE LED to specified value
     }
 }
 
-function remoteLED(rgb, active) {
+function remoteLED(rgb, active, id) {
+    // build a string to be sent over serial and then over rf24 to remote arduinos
+    let values = '<' + id + ',' + rgb.red + ',' + rgb.green + ',' + rgb.blue + ',' + active + '>';
 
+    // send the string over serial
+    com.write(values, function(err) {
+		if (err)
+			return console.log('Error on write: ', err.message);
+
+		// console.log('message written');
+	})	
 }
 
 io.sockets.on('connection', function (socket) { // Web Socket Connection
@@ -95,11 +121,13 @@ io.sockets.on('connection', function (socket) { // Web Socket Connection
         for (var i = 0; i < lightGroup.length; i++) {
             if (lightGroup[i] == 0) {
                 onBoardLED(rgb, active);
+            } else {
+                remoteLED(rgb, active, lightGroup[i]);
             }
         }
 
 
-        
+
 
     });
 
