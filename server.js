@@ -96,8 +96,11 @@ function onBoardLED(rgb, active) {
 }
 
 function remoteLED(rgb, active, id) {
+    // convert active (boolean) to a number ( 1 or 0)
+    var onOff = active ? 1 : 0;
+    
     // build a string to be sent over serial and then over rf24 to remote arduinos
-    let values = '<' + id + ',' + rgb.red + ',' + rgb.green + ',' + rgb.blue + ',' + active + '>';
+    let values = '<' + id + ',' + rgb.red + ',' + rgb.green + ',' + rgb.blue + ',' + onOff + '>';
     console.log(values);
     // send the string over serial
     com.write(values, function(err) {
