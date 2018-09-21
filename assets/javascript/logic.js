@@ -134,7 +134,6 @@ database.ref().on("value", function (snapshot) {
 database.ref('/lighting-groups').on('value', function (snap) {
     var nodes = snap.val();
 
-    console.log(Object.keys(nodes).length);
     for (var i = 0; i < Object.keys(nodes).length; i++) {
         var input = $('<input>')
             .addClass('lighting-group-checkbox')
@@ -162,7 +161,33 @@ database.ref('/lighting-groups').on('value', function (snap) {
 });
 
 
-$('#lighting-groups').on('click', '.lighting-group-checkbox', function() {
+// select all or clear all checkboxes when the respective buttons are hit
+$('#select-all-lights').on('click', function() {
+    var boxes = $('.lighting-group-checkbox');
+
+    // clear the array and add these new ones into it
+    lightGroup = [];
+
+    for (var i = 0; i < boxes.length; i++) {
+        $(boxes[i]).prop('checked', true);
+        lightGroup = lightGroup.concat($(boxes[i]).data('light-id'));
+    }
+
+
+    console.log(lightGroup);
+})
+
+$('#select-none-lights').on('click', function() {
+    $('.lighting-group-checkbox').prop('checked', false);
+    
+    // clear the lightGroup array
+    lightGroup = [];
+    
+    console.log(lightGroup);
+})
+
+// add a lighting group to the active array when it is checked
+$('#lighting-groups').on('change', '.lighting-group-checkbox', function() {
     let val = $(this).data('light-id');
     let index = lightGroup.indexOf(val);
 
