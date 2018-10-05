@@ -102,14 +102,14 @@ function remoteLED(rgb, active, id) {
     let values = '<' + id + ',' + rgb.red + ',' + rgb.green + ',' + rgb.blue + ',' + onOff + '>';
 
     // send the string over serial
-    console.log('before com.write()');
+    console.log('before com.write(): ' + values);
     com.write(values, function(err) {
         if (err)
         return console.log('Error on write: ', err.message);
         
 		// console.log('message written');
 	})	
-    console.log('after com.write()');
+    console.log('after com.write(): ' + values);
 }
 
 io.sockets.on('connection', function (socket) { // Web Socket Connection
