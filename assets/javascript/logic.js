@@ -136,7 +136,7 @@ database.ref('/lighting-groups').on('value', function (snap) {
     var nodes = snap.val();
 
     // empty the section before refilling it with new values
-    $('#lighting-groups')
+    $('#lighting-groups').html('');
 
     for (var i = 0; i < Object.keys(nodes).length; i++) {
         var input = $('<input>')
