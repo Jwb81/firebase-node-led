@@ -107,7 +107,7 @@ function remoteLED(rgb, active, id) {
         if (err)
         return console.log('Error on write: ', err.message);
         
-		// console.log('message written');
+		console.log('message written');
 	})	
     console.log('after com.write(): ' + values);
 }
