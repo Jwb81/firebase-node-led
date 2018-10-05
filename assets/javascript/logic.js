@@ -47,7 +47,7 @@ var setData = function () {
         green: rgb.green,
         blue: rgb.blue,
         active: active,
-        password: password
+        // password: password
     }
     // console.log(obj);
     database.ref().update(obj)
