@@ -99,7 +99,7 @@ function remoteLED(rgb, active, id) {
     var onOff = active ? 1 : 0;
     
     // build a string to be sent over serial and then over rf24 to remote arduinos
-    let values = '<' + id + ',' + rgb.red + ',' + rgb.green + ',' + rgb.blue + ',' + onOff + '>';
+    let values = '<' + id + ',' + rgb.red + ',' + rgb.green + ',' + rgb.blue + ',' + onOff + '><<<<';
 
     // send the string over serial
     console.log('before com.write(): ' + values);
