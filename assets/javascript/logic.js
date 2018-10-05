@@ -96,10 +96,11 @@ database.ref().on("value", function (snapshot) {
     if (snapshot.child("red").exists() &&
         snapshot.child("green").exists() &&
         snapshot.child("blue").exists() &&
-        snapshot.child("active").exists() &&
-        snapshot.child("password").exists()) {
+        snapshot.child("active").exists() 
+        // && snapshot.child("password").exists()
+        ) {
 
-        password = info.password;
+        // password = info.password;
 
         rgb.red = info.red; //Update the RED color according to the picker
         rgb.green = info.green; //Update the GREEN color according to the picker
@@ -133,6 +134,9 @@ database.ref().on("value", function (snapshot) {
 // do something with new lighting groups and 
 database.ref('/lighting-groups').on('value', function (snap) {
     var nodes = snap.val();
+
+    // empty the section before refilling it with new values
+    $('#lighting-groups')
 
     for (var i = 0; i < Object.keys(nodes).length; i++) {
         var input = $('<input>')
