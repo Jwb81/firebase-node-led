@@ -29,7 +29,7 @@ var com = new SerialPort('/dev/ttyACM0', {
 })
 
 com.on('data', function(data) {
-	console.log(data.toString());
+	// console.log(data.toString());
 })
 
 com.on('error', function(err) {

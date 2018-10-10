@@ -87,7 +87,7 @@ body {
   }
 
   .scene-btn, .scene-info-btn {
-    /* width: 100%; */
+    margin: 5px;
   }
   .scene-btn {
     width: 70%;
