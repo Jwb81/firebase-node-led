@@ -7,6 +7,8 @@ var bSlider;
 var redNum, greenNum, blueNum;
 var password;
 let nodeCount;
+let scenes;
+let lights;
 let lightGroup = []; // holds all of the checked light groups
 
 // let allInputs = $(':input');
@@ -94,7 +96,7 @@ let displayScenes = (scenes) => {
 
     scenes.forEach(scene => {
         let input = $('<button>')
-            .addClass('btn btn-success')
+            .addClass('btn btn-success scene-btn')
             .attr('data-scene-id', scene.id)
             .text(scene.sceneName);
 
@@ -182,9 +184,11 @@ database.ref().once('value', function (snap) {
     var info = snap.val();
 
     nodeCount = info.node_count;
+    lights = info.lights;
+    scenes = info.scenes;
 
-    displayLights(info.lights)
-    displayScenes(info.scenes);
+    displayLights(lights)
+    displayScenes(scenes);
 
 }, function (errorObject) {
     console.log("The read failed: " + errorObject.code);
@@ -225,6 +229,18 @@ $('#lighting-groups').on('change', '.lighting-group-checkbox', function () {
     else
         lightGroup.splice(index, 1);
 
+})
+
+$('#light-scenes').on('click', '.scene-btn', function() {
+    let val = $(this).data('scene-id');
+    let arr = scenes[val].lights;
+    arr.forEach(x => {
+        rgb.red = x.red;
+        rgb.green = x.green;
+        rgb.blue = x.blue;
+
+        socket.emit("rgb", rgb, true, [x.id]);
+    })
 })
 
 // unlock admin privileges by clicking on the header
