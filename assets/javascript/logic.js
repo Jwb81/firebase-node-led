@@ -201,7 +201,7 @@ $('#light-scenes').on('click', '.scene-info-btn', function() {
     $('#light-scenes-info').html('');
     
     // fill the right panel with the new info
-    let thisScene = scenes.filter(x => x.id === val);
+    let thisScene = scenes.filter(x => x.id === val)[0];
     console.log(thisScene);
     
     let allLights = '';
