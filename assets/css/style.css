@@ -97,4 +97,8 @@ body {
     .border-top-small {
       margin-top: 10px;
     }
+
+    .scene-btn, .scene-info-btn {
+      width: 100%;
+    }
   }

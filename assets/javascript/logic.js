@@ -99,18 +99,19 @@ let displayScenes = (scenes) => {
             .addClass('btn btn-success scene-btn')
             .attr('data-scene-id', scene.id)
             .text(scene.sceneName)
-            .attr('style', 'display:inline;width:70%;margin: 5px;float:left;')
+            .attr('style', 'width:70%;margin: 5px;float:left;')
             
             let info = $('<button>')
             .addClass('btn btn-info scene-info-btn')
             .attr('data-scene-id', scene.id)
-            .attr('style', 'display:inline;width:20%;margin: 5px; float:right;')
+            .attr('style', 'width:20%;margin: 5px; float:right;')
             .text('info')
             // .attr()
 
         $('#light-scenes')
             .append(input)
             .append(info)
+            .append('<hr>')
     })
 }
 
@@ -202,12 +203,11 @@ $('#light-scenes').on('click', '.scene-info-btn', function() {
     
     // fill the right panel with the new info
     let thisScene = scenes.filter(x => x.id === val)[0];
-    console.log(thisScene);
     
     let allLights = '';
     thisScene.lights.forEach(x => {
         let thisLight = lights.filter(lit => lit.id === x.id)[0]; // grab the first match
-        allLights += `${thisLight.roomName} ${x.red} ${x.green} ${x.blue}<br>`
+        allLights += `${thisLight.roomName} rgb(${x.red},${x.green},${x.blue})<br>`
     })
     
     $('#light-scenes-info').html(
