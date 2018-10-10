@@ -15,8 +15,6 @@ let lightGroup = [];    // holds all of the checked light groups
 //     }
 // });
 
-console.log(initDB);
-
 /* global moment firebase */
 
 // Initialize Firebase
@@ -368,3 +366,7 @@ window.addEventListener("load", function () { //when page loads
 
 
 });
+
+socket.on('db-initial-values', (data) => {
+    console.log(data);
+})

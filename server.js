@@ -134,6 +134,10 @@ io.sockets.on('connection', function (socket) { // Web Socket Connection
 
     });
 
+    socket.on('initial-db-values', function() {
+        socket.emit('initial-db-values', dbInitialValues);
+    })
+
 });
 
 process.on('SIGINT', function () { //on ctrl+c
