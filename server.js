@@ -4,21 +4,41 @@ var http = require('http').Server(app); //require http server, and create server
 var fs = require('fs'); //require filesystem module
 var io = require('socket.io')(http) //require socket.io module and pass the http object (server)
 var Gpio = require('pigpio').Gpio, //include pigpio to interact with the GPIO
-    ledRed = new Gpio(13, {
+    ledRed = new Gpio(17, {
         mode: Gpio.OUTPUT
     }),
-    ledGreen = new Gpio(19, {
+    ledGreen = new Gpio(22, {
         mode: Gpio.OUTPUT
     }),
-    ledBlue = new Gpio(26, {
+    ledBlue = new Gpio(24, {
         mode: Gpio.OUTPUT
     }),
-    redRGB = 255, //set starting value of RED variable to off (255 for common anode)
-    greenRGB = 255, //set starting value of GREEN variable to off (255 for common anode)
-    blueRGB = 255, //set starting value of BLUE variable to off (255 for common anode)
+    redRGB = 0, //set starting value of RED variable to off (255 for common anode)
+    greenRGB = 0, //set starting value of GREEN variable to off (255 for common anode)
+    blueRGB = 0, //set starting value of BLUE variable to off (255 for common anode)
     rgbActive = false;
 
+// for communicating with the attached Arduino over serial comm
+var SerialPort = require('serialport');
+var com = new SerialPort('/dev/ttyACM0', {
+    baudRate: 115200,
+}, function (err) {
+    if (err)
+        return console.log('Error: ', err.message);
+})
+
+com.on('data', function(data) {
+	console.log(data.toString());
+})
+
+com.on('error', function(err) {
+	console.log('Error: ', err.message);
+})
+
+
 var port = 8080;
+var on = 1;
+var off = 0;
 
 app.use(express.static(__dirname));
 // app.use(bodyParser.json())
@@ -28,9 +48,9 @@ app.use(express.static(__dirname));
 
 
 //RESET RGB LED
-ledRed.digitalWrite(1); // Turn RED LED off
-ledGreen.digitalWrite(1); // Turn GREEN LED off
-ledBlue.digitalWrite(1); // Turn BLUE LED off
+ledRed.digitalWrite(off); // Turn RED LED off
+ledGreen.digitalWrite(off); // Turn GREEN LED off
+ledBlue.digitalWrite(off); // Turn BLUE LED off
 
 var server = http.listen(port, () => {
     var host = server.address().address;
@@ -57,43 +77,67 @@ var server = http.listen(port, () => {
 //     });
 // }
 
+
 function turnOff() {
-    ledRed.digitalWrite(1); // Turn RED LED off
-    ledGreen.digitalWrite(1); // Turn GREEN LED off
-    ledBlue.digitalWrite(1); // Turn BLUE LED off
+    ledRed.digitalWrite(off); // Turn RED LED off
+    ledGreen.digitalWrite(off); // Turn GREEN LED off
+    ledBlue.digitalWrite(off); // Turn BLUE LED off
+}
+
+function onBoardLED(rgb, active) {
+    if (!active) {
+        turnOff();
+    } else {
+        ledRed.pwmWrite(rgb.red); //set RED LED to specified value
+        ledGreen.pwmWrite(rgb.green); //set GREEN LED to specified value
+        ledBlue.pwmWrite(rgb.blue); //set BLUE LED to specified value
+    }
+}
+
+function remoteLED(rgb, active, id) {
+    // convert active (boolean) to a number ( 1 or 0)
+    var onOff = active ? 1 : 0;
+    
+    // build a string to be sent over serial and then over rf24 to remote arduinos
+    let values = '<' + id + ',' + rgb.red + ',' + rgb.green + ',' + rgb.blue + ',' + onOff + '>';
+
+    // send the string over serial
+    com.write(values, function(err) {
+        if (err)
+        return console.log('Error on write: ', err.message);
+        
+		// console.log('message written');
+	})	
 }
 
 io.sockets.on('connection', function (socket) { // Web Socket Connection
-    socket.on('rgb', function (rgb, active) { //get light switch status from client (r, g, b, active)
+    socket.on('rgb', function (rgb, active, lightGroup) { //get light switch status from client (r, g, b, active)
         // console.log(rgb); 
 
         //for common anode RGB LED  255 is fully off, and 0 is fully on, so we have to change the value from the client
-        redRGB = 255 - parseInt(rgb.red);
-        greenRGB = 255 - parseInt(rgb.green);
-        blueRGB = 255 - parseInt(rgb.blue);
+        redRGB = parseInt(rgb.red);
+        greenRGB = parseInt(rgb.green);
+        blueRGB = parseInt(rgb.blue);
         rgbActive = active;
 
-        if (!rgbActive) {
-            turnOff();
-        }
-        else {
-            ledRed.pwmWrite(redRGB); //set RED LED to specified value
-            ledGreen.pwmWrite(greenRGB); //set GREEN LED to specified value
-            ledBlue.pwmWrite(blueRGB); //set BLUE LED to specified value
+        for (var i = 0; i < lightGroup.length; i++) {
+            if (lightGroup[i] == 0) {
+                onBoardLED(rgb, active);
+            } else {
+                remoteLED(rgb, active, lightGroup[i]);
+            }
         }
 
-        // console.log('----------------');
-        // console.log('active: ' + rgbActive);
-        // console.log("rgb: " + redRGB + ", " + greenRGB + ", " + blueRGB); //output converted to console
 
-        
+
+
     });
 
 });
 
 process.on('SIGINT', function () { //on ctrl+c
-    ledRed.digitalWrite(1); // Turn RED LED off
-    ledGreen.digitalWrite(1); // Turn GREEN LED off
-    ledBlue.digitalWrite(1); // Turn BLUE LED off
+    ledRed.digitalWrite(off); // Turn RED LED off
+    ledGreen.digitalWrite(off); // Turn GREEN LED off
+    ledBlue.digitalWrite(off); // Turn BLUE LED off
     process.exit(); //exit completely
 });

@@ -5,6 +5,17 @@ var rSlider;
 var gSlider;
 var bSlider;
 var redNum, greenNum, blueNum;
+var password;
+let lightGroup = [];    // holds all of the checked light groups
+
+// let allInputs = $(':input');
+// Array.from(allInputs).forEach(element => {
+//     if (element.id != 'password' && element.id != 'password-submit') {
+//         element.setAttribute('disabled', 'disabled');
+//     }
+// });
+
+
 
 /* global moment firebase */
 
@@ -28,13 +39,47 @@ var database = firebase.database();
 
 
 // FUNCTIONS
+var resetDb = function () {
+    var init = {
+        red: 0,
+        green: 0,
+        blue: 0,
+        active: false,
+        'lighting-groups': [
+            {
+                room: `Baby's room 16ft`,
+                rgb: {
+                    red: 0,
+                    green: 0,
+                    blue: 0
+                }
+            },
+            {
+                room: `Baby's room 5ft`,
+                rgb: {
+                    red: 0,
+                    green: 0,
+                    blue: 0
+                }
+            }
+        ]
+    }
+
+    database.ref().set(obj)
+}
+
 var setData = function () {
-    database.ref().set({
+    // console.log(rgb.red);
+    // console.log(password);
+    var obj = {
         red: rgb.red,
         green: rgb.green,
         blue: rgb.blue,
-        active: active
-    })
+        active: active,
+        // password: password
+    }
+    // console.log(obj);
+    database.ref().update(obj)
 }
 
 // connectionsRef references a specific location in our database.
@@ -80,7 +125,11 @@ database.ref().on("value", function (snapshot) {
     if (snapshot.child("red").exists() &&
         snapshot.child("green").exists() &&
         snapshot.child("blue").exists() &&
-        snapshot.child("active").exists()) {
+        snapshot.child("active").exists() 
+        // && snapshot.child("password").exists()
+        ) {
+
+        // password = info.password;
 
         rgb.red = info.red; //Update the RED color according to the picker
         rgb.green = info.green; //Update the GREEN color according to the picker
@@ -111,6 +160,103 @@ database.ref().on("value", function (snapshot) {
     console.log("The read failed: " + errorObject.code);
 });
 
+// do something with new lighting groups and 
+database.ref('/lighting-groups').on('value', function (snap) {
+    var nodes = snap.val();
+
+    // empty the section before refilling it with new values
+    $('#lighting-groups').html('');
+
+    for (var i = 0; i < Object.keys(nodes).length; i++) {
+        var input = $('<input>')
+            .addClass('lighting-group-checkbox')
+            .attr('type', 'checkbox')
+            .attr('data-light-id', i)
+
+        var span = $('<span>')
+            .addClass('lighting-group-name')
+            .text(
+                nodes[i].room + ' (' +
+                nodes[i].rgb.red + ',' +
+                nodes[i].rgb.green + ',' +
+                nodes[i].rgb.blue + ')'
+            )
+
+        $('#lighting-groups')
+                .append(input)
+                .append(span)
+                .append('<br />')
+    }
+
+
+}, function (errorObject) {
+    console.log("The read failed: " + errorObject.code);
+});
+
+
+// select all or clear all checkboxes when the respective buttons are hit
+$('#select-all-lights').on('click', function() {
+    var boxes = $('.lighting-group-checkbox');
+
+    // clear the array and add these new ones into it
+    lightGroup = [];
+
+    for (var i = 0; i < boxes.length; i++) {
+        $(boxes[i]).prop('checked', true);
+        lightGroup = lightGroup.concat($(boxes[i]).data('light-id'));
+    }
+
+
+    // console.log(lightGroup);
+})
+
+$('#select-none-lights').on('click', function() {
+    $('.lighting-group-checkbox').prop('checked', false);
+    
+    // clear the lightGroup array
+    lightGroup = [];
+
+    // console.log(lightGroup);
+})
+
+// add a lighting group to the active array when it is checked
+$('#lighting-groups').on('change', '.lighting-group-checkbox', function() {
+    let val = $(this).data('light-id');
+    let index = lightGroup.indexOf(val);
+
+    if (index == -1)
+        lightGroup = lightGroup.concat(val);
+    else
+        lightGroup.splice(index, 1);
+
+    // console.log(lightGroup);
+})
+
+// unlock admin privileges by clicking on the header
+$('#header-unlock-admin').on('click', function () {
+    $('#admin-stuff').toggle('hide');
+})
+
+$('#password-submit').on('click', function () {
+    let pass = $('#password').val();
+
+    if (pass == password) {
+        Array.from(allInputs).forEach(element => {
+            element.removeAttribute('disabled');
+        });
+
+        $('#pass').remove();
+    }
+})
+
+$('#set-background').on('click', function () {
+    $('body').css('background-color', 'rgb(' + rgb.red + ',' + rgb.green + ',' + rgb.blue + ')')
+})
+
+$('#reset-db').on('click', function() {
+    resetDb();
+})
+
 
 window.addEventListener("load", function () { //when page loads
     var activeCheckbox = document.getElementById('active');
@@ -127,21 +273,21 @@ window.addEventListener("load", function () { //when page loads
         redNum.value = this.value;
         colorShow.style.backgroundColor = rgb.toRgbString(); //update the "Current color"
         setData();
-        socket.emit("rgb", rgb, active); //send the updated color to RGB LED via WebSocket
+        socket.emit("rgb", rgb, active, lightGroup); //send the updated color to RGB LED via WebSocket
     });
     gSlider.addEventListener("change", function () { //add event listener for when green slider changes
         rgb.green = this.value; //update the GREEN color according to the slider
         greenNum.value = this.value;
         colorShow.style.backgroundColor = rgb.toRgbString(); //update the "Current color"
         setData();
-        socket.emit("rgb", rgb, active); //send the updated color to RGB LED via WebSocket
+        socket.emit("rgb", rgb, active, lightGroup); //send the updated color to RGB LED via WebSocket
     });
     bSlider.addEventListener("change", function () { //add event listener for when blue slider changes
         rgb.blue = this.value; //update the BLUE color according to the slider
         blueNum.value = this.value;
         colorShow.style.backgroundColor = rgb.toRgbString(); //update the "Current color"
         setData();
-        socket.emit("rgb", rgb, active); //send the updated color to RGB LED via WebSocket
+        socket.emit("rgb", rgb, active, lightGroup); //send the updated color to RGB LED via WebSocket
     });
     picker.addEventListener("input", function () { //add event listener for when colorpicker changes
         rgb.red = w3color(this.value).red; //Update the RED color according to the picker
@@ -160,12 +306,16 @@ window.addEventListener("load", function () { //when page loads
 
         setData();
 
-        socket.emit("rgb", rgb, active); //send the updated color to RGB LED via WebSocket
+        socket.emit("rgb", rgb, active, lightGroup); //send the updated color to RGB LED via WebSocket
     });
 
-    redNum.addEventListener('change', function() {
+    redNum.addEventListener('change', function () {
         var val = parseInt(this.value);
-        if (this.value < 0 || this.value > 255) {
+        $(this).removeClass('input-error');
+
+        if (this.value < 0 || this.value > 255 || isNaN(this.value)) {
+            $(this).addClass('input-error');
+            console.log('NaN');
             return;
         }
 
@@ -173,10 +323,14 @@ window.addEventListener("load", function () { //when page loads
         rSlider.value = this.value;
         colorShow.style.backgroundColor = rgb.toRgbString(); //update the "Current color"
         setData();
-        socket.emit("rgb", rgb, active); //send the updated color to RGB LED via WebSocket
+        socket.emit("rgb", rgb, active, lightGroup); //send the updated color to RGB LED via WebSocket
     })
-    greenNum.addEventListener('change', function() {
-        if (this.value < 0 || this.value > 255) {
+    greenNum.addEventListener('change', function () {
+        $(this).removeClass('input-error');
+
+        if (this.value < 0 || this.value > 255 || isNaN(this.value)) {
+            $(this).addClass('input-error');
+            console.log('NaN');
             return;
         }
 
@@ -184,27 +338,33 @@ window.addEventListener("load", function () { //when page loads
         gSlider.value = this.value;
         colorShow.style.backgroundColor = rgb.toRgbString(); //update the "Current color"
         setData();
-        socket.emit("rgb", rgb, active); //send the updated color to RGB LED via WebSocket
+        socket.emit("rgb", rgb, active, lightGroup); //send the updated color to RGB LED via WebSocket
     })
-    blueNum.addEventListener('change', function() {
-        if (this.value < 0 || this.value > 255) {
+    blueNum.addEventListener('change', function () {
+        $(this).removeClass('input-error');
+
+        if (this.value < 0 || this.value > 255 || isNaN(this.value)) {
+            $(this).addClass('input-error');
+            console.log('NaN');
             return;
         }
 
         rgb.blue = this.value;
         bSlider.value = this.value;
         colorShow.style.backgroundColor = rgb.toRgbString(); //update the "Current color"
+
+        console.log('setting data');
+
         setData();
-        socket.emit("rgb", rgb, active); //send the updated color to RGB LED via WebSocket
+        socket.emit("rgb", rgb, active, lightGroup); //send the updated color to RGB LED via WebSocket
     })
 
 
     activeCheckbox.addEventListener('change', function () {
         active = this.checked;
         setData();
-        socket.emit('rgb', rgb, active);
+        socket.emit('rgb', rgb, active, lightGroup);
     })
-
 
 
 });
