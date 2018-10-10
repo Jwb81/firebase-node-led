@@ -39,6 +39,35 @@ var database = firebase.database();
 
 
 // FUNCTIONS
+var resetDb = function () {
+    var init = {
+        red: 0,
+        green: 0,
+        blue: 0,
+        active: false,
+        'lighting-groups': [
+            {
+                room: `Baby's room 16ft`,
+                rgb: {
+                    red: 0,
+                    green: 0,
+                    blue: 0
+                }
+            },
+            {
+                room: `Baby's room 5ft`,
+                rgb: {
+                    red: 0,
+                    green: 0,
+                    blue: 0
+                }
+            }
+        ]
+    }
+
+    database.ref().set(obj)
+}
+
 var setData = function () {
     // console.log(rgb.red);
     // console.log(password);
@@ -222,6 +251,10 @@ $('#password-submit').on('click', function () {
 
 $('#set-background').on('click', function () {
     $('body').css('background-color', 'rgb(' + rgb.red + ',' + rgb.green + ',' + rgb.blue + ')')
+})
+
+$('#reset-db').on('click', function() {
+    resetDb();
 })
 
 
