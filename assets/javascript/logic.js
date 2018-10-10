@@ -178,13 +178,13 @@ database.ref('/lights').on("value", function (snapshot) {
 });
 
 // display each light to the user with a checkbox next to it
-database.ref('').once('value', function (snap) {
+database.ref().once('value', function (snap) {
     var info = snap.val();
 
     nodeCount = info.node_count;
 
     displayLights(info.lights)
-    displayScenes(info.scenes);
+    // displayScenes(info.scenes);
 
 }, function (errorObject) {
     console.log("The read failed: " + errorObject.code);
