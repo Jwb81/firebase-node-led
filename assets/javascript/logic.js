@@ -161,12 +161,14 @@ database.ref().on("value", function (snapshot) {
 });
 
 // do something with new lighting groups and 
-database.ref('/lighting-groups').on('value', function (snap) {
+database.ref('/lights').on('value', function (snap) {
     var nodes = snap.val();
 
     // empty the section before refilling it with new values
     $('#lighting-groups').html('');
-
+    
+    console.log('Lights length: ' + nodes.length);
+    
     for (var i = 0; i < Object.keys(nodes).length; i++) {
         var input = $('<input>')
             .addClass('lighting-group-checkbox')
