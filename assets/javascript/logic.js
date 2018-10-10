@@ -104,7 +104,7 @@ let displayScenes = (scenes) => {
             let info = $('<button>')
             .addClass('btn btn-info scene-info-btn')
             .attr('data-scene-id', scene.id)
-            .attr('style', 'display:block;margin: 5px auto;')
+            .attr('style', ';margin: 5px auto;')
             .text('info')
             // .attr()
 
