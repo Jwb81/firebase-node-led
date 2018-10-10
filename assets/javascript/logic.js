@@ -176,7 +176,7 @@ database.ref('/lights').on('value', function (snap) {
         var span = $('<span>')
             .addClass('lighting-group-name')
             .text(
-                lights[i].room + ' (' +
+                lights[i].roomName + ' (' +
                 lights[i].red + ',' +
                 lights[i].green + ',' +
                 lights[i].blue + ')'
