@@ -40,15 +40,15 @@ var database = firebase.database();
 var setData = function () {
     // console.log(rgb.red);
     // console.log(password);
-    let obj = {};
-
+    
     lightGroup.forEach(x => {
-        obj[x] =  {
+        let obj = {
             red: rgb.red,
             green: rgb.green,
             blue: rgb.blue,
             active: active
         }
+        database.ref('/lights/' + x).update(obj)
     })
     
     // var obj = {
@@ -59,7 +59,6 @@ var setData = function () {
     //     // password: password
     // }
     // console.log(obj);
-    database.ref('/lights').update(obj)
 }
 
 // connectionsRef references a specific location in our database.
