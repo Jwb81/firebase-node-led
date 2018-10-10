@@ -99,12 +99,12 @@ let displayScenes = (scenes) => {
             .addClass('btn btn-success scene-btn')
             .attr('data-scene-id', scene.id)
             .text(scene.sceneName)
-            .attr('style', 'width:100%;margin: 5px;float:left;')
+            .attr('style', 'width:100%;margin: 5px;')
             
             let info = $('<button>')
             .addClass('btn btn-info scene-info-btn')
             .attr('data-scene-id', scene.id)
-            .attr('style', 'width:100%;margin: 5px; float:right;')
+            .attr('style', 'width:100%;margin: 5px;')
             .text('info')
             // .attr()
 
