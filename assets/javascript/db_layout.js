@@ -19,7 +19,7 @@ module.exports = {
     ],
     scenes: [{
         id: 0,
-        sceneName: `Night Time`,
+        sceneName: `Bonne Nuit`,
         lights: [{
                 id: 0,
                 red: 2,
@@ -36,6 +36,23 @@ module.exports = {
     },
     {
         id: 1,
+        sceneName: `Bon Matin`,
+        lights: [{
+                id: 0,
+                red: 172,
+                green: 142,
+                blue: 100
+            },
+            {
+                id: 1,
+                red: 172,
+                green: 142,
+                blue: 100
+            }
+        ]
+    },
+    {
+        id: 2,
         sceneName: `Pink for Babe :)`,
         lights: [{
                 id: 0,
