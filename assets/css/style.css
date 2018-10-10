@@ -89,6 +89,13 @@ body {
   .scene-btn, .scene-info-btn {
     /* width: 100%; */
   }
+  .scene-btn {
+    width: 70%;
+  }
+  .scene-info-btn {
+    width: 20%;
+    /* float: right; */
+  }
 
   @media (max-width: 768px) {
     .border-right-md {
