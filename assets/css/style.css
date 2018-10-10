@@ -86,6 +86,12 @@ body {
     font-size: 1.4em;
   }
 
+  #select-all-lights,
+  #select-none-lights {
+    background-color: rgb(75,75,75);
+    color: white
+  }
+
   .scene-btn, .scene-info-btn {
     margin: 5px;
   }
