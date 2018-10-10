@@ -76,12 +76,7 @@ let displayLights = (lights) => {
 
         var span = $('<span>')
             .addClass('lighting-group-name')
-            .text(
-                lights[i].roomName + ' (' +
-                lights[i].red + ',' +
-                lights[i].green + ',' +
-                lights[i].blue + ')'
-            )
+            .text( lights[i].roomName )
 
         $('#lighting-groups')
             .append(input)
