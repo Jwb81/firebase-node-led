@@ -203,10 +203,16 @@ $('#light-scenes').on('click', '.scene-info-btn', function() {
     // fill the right panel with the new info
     let thisScene = scenes.filter(x => x.id === val);
     console.log(thisScene);
+    
+    let allLights = '';
+    thisScene.lights.forEach(x => {
+        allLights += `x.id ${x.red} ${x.green} ${x.blue}\n`
+    })
+    
     $('#light-scenes-info').html(
         `
         <h2>${thisScene.sceneName}</h2>
-        ${thisScene.lights.forEach(x => {return x + '<br>'})}
+        ${allLights}
         `
     );
 
