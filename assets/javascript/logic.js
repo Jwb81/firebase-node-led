@@ -15,7 +15,7 @@ let lightGroup = [];    // holds all of the checked light groups
 //     }
 // });
 
-
+console.log(initDB);
 
 /* global moment firebase */
 

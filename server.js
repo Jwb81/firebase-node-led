@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express();
+let initDB = require('./assets/javascript/db_layout');
 var http = require('http').Server(app); //require http server, and create server with function handler()
 var fs = require('fs'); //require filesystem module
 var io = require('socket.io')(http) //require socket.io module and pass the http object (server)
@@ -17,6 +18,8 @@ var Gpio = require('pigpio').Gpio, //include pigpio to interact with the GPIO
     greenRGB = 0, //set starting value of GREEN variable to off (255 for common anode)
     blueRGB = 0, //set starting value of BLUE variable to off (255 for common anode)
     rgbActive = false;
+
+console.log(initDB);
 
 // for communicating with the attached Arduino over serial comm
 var SerialPort = require('serialport');
