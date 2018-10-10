@@ -92,14 +92,14 @@ let displayScenes = (scenes) => {
     // empty the scenes section before refilling it
     $('#light-scenes').html('');
 
-    scenes.forEach(scene => {
-        let input = $('<button>')
-            .addClass('btn btn-success')
-            .attr('data-scene-id', scene.id)
-            .text(scene.sceneName);
+    // scenes.forEach(scene => {
+    //     let input = $('<button>')
+    //         .addClass('btn btn-success')
+    //         .attr('data-scene-id', scene.id)
+    //         .text(scene.sceneName);
 
-        $('#light-scenes').append(input);
-    })
+    //     $('#light-scenes').append(input);
+    // })
 }
 
 // connectionsRef references a specific location in our database.
