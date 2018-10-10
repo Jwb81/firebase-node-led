@@ -1,4 +1,4 @@
-exports.db = {
+module.exports = {
     node_count: 2,
     lights: [
         {

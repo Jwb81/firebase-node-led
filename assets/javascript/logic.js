@@ -65,7 +65,7 @@ var resetDb = function () {
         ]
     }
 
-    database.ref().set(obj)
+    database.ref().set(init)
 }
 
 var setData = function () {
