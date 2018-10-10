@@ -6,6 +6,7 @@ var gSlider;
 var bSlider;
 var redNum, greenNum, blueNum;
 var password;
+let nodeCount;
 let lightGroup = []; // holds all of the checked light groups
 
 // let allInputs = $(':input');
@@ -40,7 +41,7 @@ var database = firebase.database();
 var setData = function () {
     // console.log(rgb.red);
     // console.log(password);
-    
+
     lightGroup.forEach(x => {
         let obj = {
             red: rgb.red,
@@ -50,7 +51,7 @@ var setData = function () {
         }
         database.ref('/lights/' + x).update(obj)
     })
-    
+
     // var obj = {
     //     red: rgb.red,
     //     green: rgb.green,
@@ -59,6 +60,46 @@ var setData = function () {
     //     // password: password
     // }
     // console.log(obj);
+}
+
+let displayLights = (lights) => {
+    // empty the section before refilling it with new values
+    $('#lighting-groups').html('');
+
+    for (var i = 0; i < lights.length; i++) {
+        var input = $('<input>')
+            .addClass('lighting-group-checkbox')
+            .attr('type', 'checkbox')
+            .attr('data-light-id', lights[i].id)
+
+        var span = $('<span>')
+            .addClass('lighting-group-name')
+            .text(
+                lights[i].roomName + ' (' +
+                lights[i].red + ',' +
+                lights[i].green + ',' +
+                lights[i].blue + ')'
+            )
+
+        $('#lighting-groups')
+            .append(input)
+            .append(span)
+            .append('<br />')
+    }
+}
+
+let displayScenes = (scenes) => {
+    // empty the scenes section before refilling it
+    $('#light-scenes').html('');
+
+    scenes.forEach(scene => {
+        let input = $('<button>')
+            .addClass('btn btn-success')
+            .attr('data-scene-id', scene.id)
+            .text(scene.sceneName);
+
+        $('#light-scenes').append(input);
+    })
 }
 
 // connectionsRef references a specific location in our database.
@@ -137,37 +178,18 @@ database.ref('/lights').on("value", function (snapshot) {
 });
 
 // display each light to the user with a checkbox next to it
-database.ref('/lights').once('value', function (snap) {
-    var lights = snap.val();
+database.ref('').once('value', function (snap) {
+    var info = snap.val();
 
-    // empty the section before refilling it with new values
-    $('#lighting-groups').html('');
+    nodeCount = info.node_count;
 
-    for (var i = 0; i < lights.length; i++) {
-        var input = $('<input>')
-            .addClass('lighting-group-checkbox')
-            .attr('type', 'checkbox')
-            .attr('data-light-id', lights[i].id)
-
-        var span = $('<span>')
-            .addClass('lighting-group-name')
-            .text(
-                lights[i].roomName + ' (' +
-                lights[i].red + ',' +
-                lights[i].green + ',' +
-                lights[i].blue + ')'
-            )
-
-        $('#lighting-groups')
-            .append(input)
-            .append(span)
-            .append('<br />')
-    }
-
+    displayLights(info.lights)
+    displayScenes(info.scenes);
 
 }, function (errorObject) {
     console.log("The read failed: " + errorObject.code);
 });
+
 
 
 // select all or clear all checkboxes when the respective buttons are hit
