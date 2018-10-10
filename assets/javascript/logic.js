@@ -111,7 +111,7 @@ let displayScenes = (scenes) => {
         $('#light-scenes')
             .append(input)
             .append(info)
-            .append('<hr>')
+            .append('<hr style="margin: 0px">')
     })
 }
 
