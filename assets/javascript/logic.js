@@ -162,14 +162,12 @@ database.ref().on("value", function (snapshot) {
 
 // do something with new lighting groups and 
 database.ref('/lights').on('value', function (snap) {
-    var nodes = snap.val();
+    var lights = snap.val();
 
     // empty the section before refilling it with new values
     $('#lighting-groups').html('');
     
-    console.log('Lights length: ' + nodes.length);
-    
-    for (var i = 0; i < Object.keys(nodes).length; i++) {
+    for (var i = 0; i < lights.length; i++) {
         var input = $('<input>')
             .addClass('lighting-group-checkbox')
             .attr('type', 'checkbox')
@@ -178,10 +176,10 @@ database.ref('/lights').on('value', function (snap) {
         var span = $('<span>')
             .addClass('lighting-group-name')
             .text(
-                nodes[i].room + ' (' +
-                nodes[i].rgb.red + ',' +
-                nodes[i].rgb.green + ',' +
-                nodes[i].rgb.blue + ')'
+                lights[i].room + ' (' +
+                lights[i].red + ',' +
+                lights[i].green + ',' +
+                lights[i].blue + ')'
             )
 
         $('#lighting-groups')
