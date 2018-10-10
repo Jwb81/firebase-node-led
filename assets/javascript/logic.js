@@ -99,11 +99,12 @@ let displayScenes = (scenes) => {
             .addClass('btn btn-success scene-btn')
             .attr('data-scene-id', scene.id)
             .text(scene.sceneName)
-            .attr('style', 'display:block;margin: 5px auto;')
-
-        let info = $('<button>')
+            .attr('style', 'margin: 5px auto;')
+            
+            let info = $('<button>')
             .addClass('btn btn-info scene-info-btn')
             .attr('data-scene-id', scene.id)
+            .attr('style', 'display:block;margin: 5px auto;')
             .text('info')
             // .attr()
 
@@ -190,6 +191,25 @@ $('#light-scenes').on('click', '.scene-btn', function() {
 
         socket.emit("rgb", rgb, true, [x.id]);
     })
+})
+
+$('#light-scenes').on('click', '.scene-info-btn', function() {
+    // get the scene id
+    let val = $(this).data('scene-id');
+
+    // clear the right panel from the previous selection
+    $('#light-scenes-info').html('');
+    
+    // fill the right panel with the new info
+    let thisScene = scenes.filter(x => x.id === val);
+    console.log(thisScene);
+    $('#light-scenes-info').html(
+        `
+        <h2>${thisScene.sceneName}</h2>
+        ${thisScene.lights.forEach(x => {return x + '<br>'})}
+        `
+    );
+
 })
 
 // unlock admin privileges by clicking on the header
