@@ -368,6 +368,6 @@ window.addEventListener("load", function () { //when page loads
 
 });
 
-socket.on('db-initial-values', (data) => {
+socket.on('initial-db-values', (data) => {
     console.log(data);
 })
