@@ -38,32 +38,33 @@ var database = firebase.database();
 
 // FUNCTIONS
 var resetDb = function () {
-    var init = {
-        red: 0,
-        green: 0,
-        blue: 0,
-        active: false,
-        'lighting-groups': [
-            {
-                room: `Baby's room 16ft`,
-                rgb: {
-                    red: 0,
-                    green: 0,
-                    blue: 0
-                }
-            },
-            {
-                room: `Baby's room 5ft`,
-                rgb: {
-                    red: 0,
-                    green: 0,
-                    blue: 0
-                }
-            }
-        ]
-    }
+    socket.emit('initial-db-values');
+    // var init = {
+    //     red: 0,
+    //     green: 0,
+    //     blue: 0,
+    //     active: false,
+    //     'lighting-groups': [
+    //         {
+    //             room: `Baby's room 16ft`,
+    //             rgb: {
+    //                 red: 0,
+    //                 green: 0,
+    //                 blue: 0
+    //             }
+    //         },
+    //         {
+    //             room: `Baby's room 5ft`,
+    //             rgb: {
+    //                 red: 0,
+    //                 green: 0,
+    //                 blue: 0
+    //             }
+    //         }
+    //     ]
+    // }
 
-    database.ref().set(init)
+    // database.ref().set(init)
 }
 
 var setData = function () {
