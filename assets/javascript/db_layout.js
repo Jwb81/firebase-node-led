@@ -33,5 +33,22 @@ module.exports = {
                 blue: 6
             }
         ]
+    },
+    {
+        id: 1,
+        sceneName: `Pink for Babe :)`,
+        lights: [{
+                id: 0,
+                red: 126,
+                green: 0,
+                blue: 126
+            },
+            {
+                id: 1,
+                red: 126,
+                green: 0,
+                blue: 126
+            }
+        ]
     }]
 }
