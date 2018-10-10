@@ -191,7 +191,8 @@ $('#lighting-groups').on('change', '.lighting-group-checkbox', function() {
     if (index == -1)
         lightGroup = lightGroup.concat(val);
     else
-        lightGroup = lightGroup.slice(index, index+1);
+        lightGroup.splice(index, 1);
+
 
     // console.log(lightGroup);
 })
