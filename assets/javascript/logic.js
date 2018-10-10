@@ -206,12 +206,13 @@ $('#light-scenes').on('click', '.scene-info-btn', function() {
     
     let allLights = '';
     thisScene.lights.forEach(x => {
-        allLights += `x.id ${x.red} ${x.green} ${x.blue}\n`
+        let thisLight = lights.filter(lit => lit.id === x.id)[0]; // grab the first match
+        allLights += `${thisLight.roomName} ${x.red} ${x.green} ${x.blue}<br>`
     })
     
     $('#light-scenes-info').html(
         `
-        <h2>${thisScene.sceneName}</h2>
+        <h4>${thisScene.sceneName}</h4>
         ${allLights}
         `
     );
