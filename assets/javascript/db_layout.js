@@ -1,23 +1,23 @@
 module.exports = {
     node_count: 2,
-    lights: [
-        {
+    lights: [{
             id: 0,
             roomName: `Baby's room 16ft`,
             red: 0,
             green: 0,
-            blue: 0
+            blue: 0,
+            active: false
         },
         {
             id: 1,
             roomName: `Baby's room 5ft`,
             red: 0,
             green: 0,
-            blue: 0
+            blue: 0,
+            active: false
         }
     ],
-    scenes: [
-        {
+    scenes: [{
         id: 0,
         sceneName: `Night Time`,
         lights: [{

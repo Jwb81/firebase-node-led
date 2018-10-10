@@ -6,7 +6,7 @@ var gSlider;
 var bSlider;
 var redNum, greenNum, blueNum;
 var password;
-let lightGroup = [];    // holds all of the checked light groups
+let lightGroup = []; // holds all of the checked light groups
 
 // let allInputs = $(':input');
 // Array.from(allInputs).forEach(element => {
@@ -40,15 +40,26 @@ var database = firebase.database();
 var setData = function () {
     // console.log(rgb.red);
     // console.log(password);
-    var obj = {
-        red: rgb.red,
-        green: rgb.green,
-        blue: rgb.blue,
-        active: active,
-        // password: password
-    }
+    let obj = {};
+
+    lightGroup.forEach(x => {
+        obj[x] =  {
+            red: rgb.red,
+            green: rgb.green,
+            blue: rgb.blue,
+            active: active
+        }
+    })
+    
+    // var obj = {
+    //     red: rgb.red,
+    //     green: rgb.green,
+    //     blue: rgb.blue,
+    //     active: active,
+    //     // password: password
+    // }
     // console.log(obj);
-    database.ref().update(obj)
+    database.ref('/lights').update(obj)
 }
 
 // connectionsRef references a specific location in our database.
@@ -76,9 +87,9 @@ var setData = function () {
 // When first loaded or when the connections list changes...
 // connectionsRef.on("value", function (snap) {
 
-    // Display the viewer count in the html.
-    // The number of online users is the number of children in the connections list.
-    // $("#connected-viewers").text(snap.numChildren());
+// Display the viewer count in the html.
+// The number of online users is the number of children in the connections list.
+// $("#connected-viewers").text(snap.numChildren());
 // });
 
 // ------------------------------------
@@ -132,12 +143,12 @@ database.ref('/lights').once('value', function (snap) {
 
     // empty the section before refilling it with new values
     $('#lighting-groups').html('');
-    
+
     for (var i = 0; i < lights.length; i++) {
         var input = $('<input>')
             .addClass('lighting-group-checkbox')
             .attr('type', 'checkbox')
-            .attr('data-light-id', i)
+            .attr('data-light-id', lights[i].id)
 
         var span = $('<span>')
             .addClass('lighting-group-name')
@@ -149,9 +160,9 @@ database.ref('/lights').once('value', function (snap) {
             )
 
         $('#lighting-groups')
-                .append(input)
-                .append(span)
-                .append('<br />')
+            .append(input)
+            .append(span)
+            .append('<br />')
     }
 
 
@@ -161,7 +172,7 @@ database.ref('/lights').once('value', function (snap) {
 
 
 // select all or clear all checkboxes when the respective buttons are hit
-$('#select-all-lights').on('click', function() {
+$('#select-all-lights').on('click', function () {
     var boxes = $('.lighting-group-checkbox');
 
     // clear the array and add these new ones into it
@@ -176,15 +187,15 @@ $('#select-all-lights').on('click', function() {
 
 })
 
-$('#select-none-lights').on('click', function() {
+$('#select-none-lights').on('click', function () {
     $('.lighting-group-checkbox').prop('checked', false);
-    
+
     // clear the lightGroup array
     lightGroup = [];
 })
 
 // add a lighting group to the active array when it is checked
-$('#lighting-groups').on('change', '.lighting-group-checkbox', function() {
+$('#lighting-groups').on('change', '.lighting-group-checkbox', function () {
     let val = $(this).data('light-id');
     let index = lightGroup.indexOf(val);
 
@@ -193,8 +204,6 @@ $('#lighting-groups').on('change', '.lighting-group-checkbox', function() {
     else
         lightGroup.splice(index, 1);
 
-
-    // console.log(lightGroup);
 })
 
 // unlock admin privileges by clicking on the header
@@ -202,23 +211,12 @@ $('#header-unlock-admin').on('click', function () {
     $('#admin-stuff').toggle('hide');
 })
 
-$('#password-submit').on('click', function () {
-    let pass = $('#password').val();
-
-    if (pass == password) {
-        Array.from(allInputs).forEach(element => {
-            element.removeAttribute('disabled');
-        });
-
-        $('#pass').remove();
-    }
-})
 
 $('#set-background').on('click', function () {
     $('body').css('background-color', 'rgb(' + rgb.red + ',' + rgb.green + ',' + rgb.blue + ')')
 })
 
-$('#reset-db').on('click', function() {
+$('#reset-db').on('click', function () {
     socket.emit('initial-db-values');
 })
 
@@ -333,6 +331,12 @@ window.addEventListener("load", function () { //when page loads
 
 
 });
+
+
+
+/*
+    SOCKET LISTENERS
+ */
 
 socket.on('initial-db-values', (data) => {
     database.ref().set(data)
