@@ -37,35 +37,36 @@ var database = firebase.database();
 
 
 // FUNCTIONS
-var resetDb = function () {
-    socket.emit('initial-db-values');
-    // var init = {
-    //     red: 0,
-    //     green: 0,
-    //     blue: 0,
-    //     active: false,
-    //     'lighting-groups': [
-    //         {
-    //             room: `Baby's room 16ft`,
-    //             rgb: {
-    //                 red: 0,
-    //                 green: 0,
-    //                 blue: 0
-    //             }
-    //         },
-    //         {
-    //             room: `Baby's room 5ft`,
-    //             rgb: {
-    //                 red: 0,
-    //                 green: 0,
-    //                 blue: 0
-    //             }
-    //         }
-    //     ]
-    // }
+// var resetDb = function (values) {
+    
+    
+//     // var init = {
+//     //     red: 0,
+//     //     green: 0,
+//     //     blue: 0,
+//     //     active: false,
+//     //     'lighting-groups': [
+//     //         {
+//     //             room: `Baby's room 16ft`,
+//     //             rgb: {
+//     //                 red: 0,
+//     //                 green: 0,
+//     //                 blue: 0
+//     //             }
+//     //         },
+//     //         {
+//     //             room: `Baby's room 5ft`,
+//     //             rgb: {
+//     //                 red: 0,
+//     //                 green: 0,
+//     //                 blue: 0
+//     //             }
+//     //         }
+//     //     ]
+//     // }
 
-    // database.ref().set(init)
-}
+//     // database.ref().set(init)
+// }
 
 var setData = function () {
     // console.log(rgb.red);
@@ -253,7 +254,7 @@ $('#set-background').on('click', function () {
 })
 
 $('#reset-db').on('click', function() {
-    resetDb();
+    socket.emit('initial-db-values');
 })
 
 
@@ -369,5 +370,5 @@ window.addEventListener("load", function () { //when page loads
 });
 
 socket.on('initial-db-values', (data) => {
-    console.log(data);
+    database.ref().set(data)
 })
