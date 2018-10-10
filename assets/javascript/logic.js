@@ -99,7 +99,7 @@ let displayScenes = (scenes) => {
             .addClass('btn btn-success scene-btn')
             .attr('data-scene-id', scene.id)
             .text(scene.sceneName)
-            .attr('style', 'display:block;margin: 5px;')
+            .attr('style', 'display:block;margin: 5px auto;')
 
         $('#light-scenes').append(input);
     })
