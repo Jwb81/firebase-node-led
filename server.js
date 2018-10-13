@@ -132,6 +132,7 @@ let changeArduinoLights = (rgb, active, id) => {
 
 let runScene = (id) => {
     // search for the scene with this id
+    console.log('scene: ' + id);
     let filterScene = scenes.filter(x => x.id === id);
     filterScene = filterScene[0]; // grab the first result from the array (should only be one result)
 
