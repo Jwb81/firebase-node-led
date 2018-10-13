@@ -1,0 +1,150 @@
+<html lang="en-us">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+  <title>Firebase LED</title>
+
+  <!-- jQuery -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <!-- Bootstrap CDN-->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+  <!-- Firebase Reference -->
+  <script src="https://www.gstatic.com/firebasejs/5.4.2/firebase.js"></script>
+
+  <!-- Styles -->
+  <link href="https://fonts.googleapis.com/css?family=Trade+Winds|Monoton|Permanent+Marker" rel="stylesheet">
+  <link rel='stylesheet' href='assets/css/style.css'>
+
+</head>
+
+<body>
+
+  <div class="container">
+    <h1 class='header'>Google Firebase & NodeJ<span id='header-unlock-admin'>S</span></h1>
+    <div class="row">
+      <div class="col-12">
+        <div class="rgb-sliders">
+          <p>Active: <input type='checkbox' value='active' id='active'></p>
+          <p><input type="range" min="0" max="255" value="0" class="slider" id="redSlider"></p>
+          <p><input type="range" min="0" max="255" value="0" class="slider" id="greenSlider"></p>
+          <p><input type="range" min="0" max="255" value="0" class="slider" id="blueSlider"></p>
+          <hr>
+          Color preview:
+          <div class="" style="background-color:black" id="colorShow">
+          </div>
+          <div>
+            Like the color in the box above?
+            <input id='set-background' type='button' class='btn btn-info' value='Set as background'>
+          </div>
+          <p>Or pick a color: <input type="color" id="pickColor"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row rgb-sliders">
+      <div class="col-md-6 col-xs-12 text-center rgb-values border-right-md">
+        <h6><em>RGB Values (0-255)</em></h6>
+        <form>
+          <div class="form-group row">
+            <div class="col-md-1"></div>
+            <label for="redNum" class='col-md-2 col-form-label'>Red: </label>
+            <div class="col-md-8">
+              <input type="text" class='form-control' id='redNum'>
+            </div>
+            <div class="col-md-1"></div>
+          </div>
+
+          <hr>
+
+          <div class="form-group row">
+            <div class="col-md-1"></div>
+            <label for="greenNum" class='col-md-2 col-form-label'>Green: </label>
+            <div class="col-md-8">
+              <input type="text" class='form-control' id='greenNum'>
+            </div>
+            <div class="col-md-1"></div>
+          </div>
+
+          <hr>
+
+          <div class="form-group row">
+            <div class="col-md-1"></div>
+            <label for="blueNum" class='col-md-2 col-form-label'>Blue: </label>
+            <div class="col-md-8">
+              <input type="text" class='form-control' id='blueNum'>
+            </div>
+            <div class="col-md-1"></div>
+          </div>
+        </form>
+        <!-- <p><span class='inputs'>Red: </span><input type="text" class='form-control' id="redNum"></p>
+          <p><span class='inputs'>Green: </span><input type="text" id="greenNum"></p>
+          <p><span class='inputs'>Blue: </span><input type="text" id="blueNum"></p> -->
+
+      </div>
+      <div class="col-md-6 col-xs-12 text-center border-top-small">
+        <h6><em>Lighting Groups</em></h6>
+        <input type='button' id='select-all-lights' class='btn' value='Select All'>
+        <input type='button' id='select-none-lights' class='btn' value='Select None'>
+        <div id="lighting-groups">
+          <!-- <input type='checkbox'><span class='lighting-group-name'>Jason's Room 16ft</span><br />
+            <input type='checkbox'><span class='lighting-group-name'>Jason's Room 5ft</span><br />
+            <input type='checkbox'><span class='lighting-group-name'>Living Room</span><br /> -->
+        </div>
+      </div>
+    </div>
+
+    <div class="row rgb-sliders">
+      <div class="favorites col-md-6 col-xs-12 border-right-md text-center">
+        <h6><em>Scenes</em></h6>
+        <div class="row">
+          <div id="light-scenes" class='col-6'></div>
+          <div id="light-scenes-info" class='col-6'></div>
+        </div>
+
+      </div>
+
+      <div class="timers col-md-6 col-xs-12 border-top-small text-center">
+        <h6><em>Lighting Effects</em></h6>
+
+      </div>
+    </div>
+
+    <div id="admin-stuff" class='row rgb-sliders' style='display:none;'>
+
+      <div class=" col-md-6 col-xs-12 border-right-md text-center">
+        <h6><em>Admin</em></h6>
+        <button id="reset-db" class='btn btn-info'>Reset DB</button>
+      </div>
+
+      <div class=" col-md-6 col-xs-12 border-top-small text-center">
+        <h6><em>There's another secret here somewhere...</em></h6>
+        <p>Hello World</p>
+      </div>
+    </div>
+
+    <!-- <div id='pass'>
+      <p>Please enter the password below to unlock the control bars :)</p>
+      <input id='password' type='text' placeholder='Ha! I&#8217;m such a nerd ;)''>
+      <button id='password-submit'>Go!</button>
+    </div> -->
+  </div>
+
+
+
+
+
+  <!-- Script -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+  <script src="https://www.w3schools.com/lib/w3color.js"></script>
+  <script type='text/javascript' src="assets/javascript/logic.js"></script>
+
+</body>
+
+</html>

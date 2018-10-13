@@ -117,28 +117,28 @@ let displayScenes = (scenes) => {
 // --------------------------------------------------------------
 // At the page load and subsequent value changes, get a snapshot of the local data.
 // This function allows you to update your page in real-time when the values within the firebase node bidderData changes
-// database.ref('/lights').on("value", function (snapshot) {
-//     var lights = snapshot.val();
+database.ref('/lights').on("value", function (snapshot) {
+    var lights = snapshot.val();
 
-//     // If any errors are experienced, log them to console.
-// }, function (errorObject) {
-//     console.log("The read failed: " + errorObject.code);
-// });
+    // If any errors are experienced, log them to console.
+}, function (errorObject) {
+    console.log("The read failed: " + errorObject.code);
+});
 
 // display each light to the user with a checkbox next to it
-// database.ref().once('value', function (snap) {
-//     var info = snap.val();
+database.ref().once('value', function (snap) {
+    var info = snap.val();
 
-//     nodeCount = info.node_count;
-//     lights = info.lights;
-//     scenes = info.scenes;
+    nodeCount = info.node_count;
+    lights = info.lights;
+    scenes = info.scenes;
 
-//     displayLights(lights)
-//     displayScenes(scenes);
+    displayLights(lights)
+    displayScenes(scenes);
 
-// }, function (errorObject) {
-//     console.log("The read failed: " + errorObject.code);
-// });
+}, function (errorObject) {
+    console.log("The read failed: " + errorObject.code);
+});
 
 
 
@@ -244,21 +244,21 @@ window.addEventListener("load", function () { //when page loads
         redNum.value = this.value;
         colorShow.style.backgroundColor = rgb.toRgbString(); //update the "Current color"
         setData();
-        // socket.emit("rgb", rgb, active, lightGroup); //send the updated color to RGB LED via WebSocket
+        socket.emit("rgb", rgb, active, lightGroup); //send the updated color to RGB LED via WebSocket
     });
     gSlider.addEventListener("change", function () { //add event listener for when green slider changes
         rgb.green = this.value; //update the GREEN color according to the slider
         greenNum.value = this.value;
         colorShow.style.backgroundColor = rgb.toRgbString(); //update the "Current color"
         setData();
-        // socket.emit("rgb", rgb, active, lightGroup); //send the updated color to RGB LED via WebSocket
+        socket.emit("rgb", rgb, active, lightGroup); //send the updated color to RGB LED via WebSocket
     });
     bSlider.addEventListener("change", function () { //add event listener for when blue slider changes
         rgb.blue = this.value; //update the BLUE color according to the slider
         blueNum.value = this.value;
         colorShow.style.backgroundColor = rgb.toRgbString(); //update the "Current color"
         setData();
-        // socket.emit("rgb", rgb, active, lightGroup); //send the updated color to RGB LED via WebSocket
+        socket.emit("rgb", rgb, active, lightGroup); //send the updated color to RGB LED via WebSocket
     });
     picker.addEventListener("input", function () { //add event listener for when colorpicker changes
         rgb.red = w3color(this.value).red; //Update the RED color according to the picker
@@ -277,7 +277,7 @@ window.addEventListener("load", function () { //when page loads
 
         setData();
 
-        // socket.emit("rgb", rgb, active, lightGroup); //send the updated color to RGB LED via WebSocket
+        socket.emit("rgb", rgb, active, lightGroup); //send the updated color to RGB LED via WebSocket
     });
 
     redNum.addEventListener('change', function () {
@@ -294,7 +294,7 @@ window.addEventListener("load", function () { //when page loads
         rSlider.value = this.value;
         colorShow.style.backgroundColor = rgb.toRgbString(); //update the "Current color"
         setData();
-        // socket.emit("rgb", rgb, active, lightGroup); //send the updated color to RGB LED via WebSocket
+        socket.emit("rgb", rgb, active, lightGroup); //send the updated color to RGB LED via WebSocket
     })
     greenNum.addEventListener('change', function () {
         $(this).removeClass('input-error');
@@ -309,7 +309,7 @@ window.addEventListener("load", function () { //when page loads
         gSlider.value = this.value;
         colorShow.style.backgroundColor = rgb.toRgbString(); //update the "Current color"
         setData();
-        // socket.emit("rgb", rgb, active, lightGroup); //send the updated color to RGB LED via WebSocket
+        socket.emit("rgb", rgb, active, lightGroup); //send the updated color to RGB LED via WebSocket
     })
     blueNum.addEventListener('change', function () {
         $(this).removeClass('input-error');
@@ -327,14 +327,14 @@ window.addEventListener("load", function () { //when page loads
         console.log('setting data');
 
         setData();
-        // socket.emit("rgb", rgb, active, lightGroup); //send the updated color to RGB LED via WebSocket
+        socket.emit("rgb", rgb, active, lightGroup); //send the updated color to RGB LED via WebSocket
     })
 
 
     activeCheckbox.addEventListener('change', function () {
         active = this.checked;
         setData();
-        // socket.emit('rgb', rgb, active, lightGroup);
+        socket.emit('rgb', rgb, active, lightGroup);
     })
 
 
@@ -348,12 +348,4 @@ window.addEventListener("load", function () { //when page loads
 
 socket.on('initial-db-values', (data) => {
     database.ref().set(data)
-})
-
-socket.on('start', (allLights, allScenes) => {
-    lights = allLights;
-    scenes = allScenes;
-
-    displayLights(lights)
-    displayScenes(scenes);
 })

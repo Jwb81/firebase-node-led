@@ -6,7 +6,8 @@ module.exports = {
             red: 0,
             green: 0,
             blue: 0,
-            active: false
+            active: false,
+            machine: 'pi'
         },
         {
             id: 1,
@@ -14,7 +15,8 @@ module.exports = {
             red: 0,
             green: 0,
             blue: 0,
-            active: false
+            active: false,
+            machine: 'arduino'
         }
     ],
     scenes: [
