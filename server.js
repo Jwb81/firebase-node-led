@@ -80,11 +80,11 @@ var server = http.listen(port, () => {
     FUNCTIONS   
 */
 // turn off all LEDs on board
-// let turnOff = () => {
-//     ledRed.digitalWrite(off); // Turn RED LED off
-//     ledGreen.digitalWrite(off); // Turn GREEN LED off
-//     ledBlue.digitalWrite(off); // Turn BLUE LED off
-// }
+let turnOff = () => {
+    ledRed.digitalWrite(off); // Turn RED LED off
+    ledGreen.digitalWrite(off); // Turn GREEN LED off
+    ledBlue.digitalWrite(off); // Turn BLUE LED off
+}
 
 let changePiLights = (rgb, active) => {
     if (!active) {
