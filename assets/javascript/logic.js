@@ -44,7 +44,6 @@ var setData = function () {
     // console.log(rgb.red);
     // console.log(password);
     active = document.querySelector('#active').checked;
-    console.log(`active: ${active}`);
 
     lightGroup.forEach(x => {
         let obj = {
