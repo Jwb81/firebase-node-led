@@ -342,6 +342,7 @@ window.addEventListener("load", function () { //when page loads
 
 
 
+
 /*
     SOCKET LISTENERS
  */
@@ -357,3 +358,7 @@ socket.on('start', (allLights, allScenes) => {
     displayLights(lights)
     displayScenes(scenes);
 })
+
+
+
+socket.emit('start');

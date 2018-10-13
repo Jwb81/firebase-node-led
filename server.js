@@ -50,7 +50,8 @@ var port = 8080;
 var on = 1;
 var off = 0;
 var defaultDatabase = admin.database();
-
+let lights;
+let scenes;
 
 /*
     STARTUP METHODS
@@ -79,11 +80,11 @@ var server = http.listen(port, () => {
     FUNCTIONS   
 */
 // turn off all LEDs on board
-let turnOff = () => {
-    ledRed.digitalWrite(off); // Turn RED LED off
-    ledGreen.digitalWrite(off); // Turn GREEN LED off
-    ledBlue.digitalWrite(off); // Turn BLUE LED off
-}
+// let turnOff = () => {
+//     ledRed.digitalWrite(off); // Turn RED LED off
+//     ledGreen.digitalWrite(off); // Turn GREEN LED off
+//     ledBlue.digitalWrite(off); // Turn BLUE LED off
+// }
 
 let changePiLights = (rgb, active) => {
     if (!active) {
@@ -127,22 +128,29 @@ let changeArduinoLights = (rgb, active, id) => {
 */
 // listen for changes to the lights
 defaultDatabase.ref('/lights').on('value', (snap) => {
-    let lights = snap.val();
+    lights = snap.val();
 
     for (let i = 0; i < lights.length; i++) {
+        let rgb = {
+            red: lights[i].red,
+            greeb: lights[i].green,
+            blue: lights[i].blue
+        }
 
         // set all the lights to the approriate colors
-        // if (lights.machine === 'arduino') {
-
-        // }
-        // else if (lights.machine === 'pi' && lights.id == secrets.pi_num) {
-
-        // }
-        // else {
-        // console.log('Something didn't match up...');
-        // }
+        if (lights.machine === 'arduino') {
+            changeArduinoLights(rgb, lights[0].active, lights[i].id);
+        } else if (lights.machine === 'pi' && lights.id == secrets.pi_num) {
+            changePiLights(rgb, lights[i].active);
+        } else {
+            console.log(`Something didn't match up...`);
+        }
 
     }
+})
+
+defaultDatabase.ref('/scenes').on('value', (snap) => {
+    scenes = snap.val();
 })
 
 
