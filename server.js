@@ -140,9 +140,13 @@ let runScene = (id) => {
         let tempLight = lights.filter(y => y.id === x.id); // should only return one light
         tempLight = tempLight[0]; // grab the first result
         console.log(tempLight);
+        
+        // create a temp scene with the machine value
+        let tempObj = Object.assign(x);
+        tempObj.machine = tempLight.machine;
 
         // send the light to changeLight()
-        changeLight(tempLight);
+        changeLight(tempObj);
     });
 }
 
