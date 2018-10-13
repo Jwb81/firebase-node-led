@@ -144,8 +144,6 @@ let runScene = (id) => {
         tempObj.machine = tempLight[0].machine;
         tempObj.active = tempLight[0].active;
 
-        console.log(tempObj);
-
         // send the light to changeLight()
         changeLight(tempObj);
     });
