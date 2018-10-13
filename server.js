@@ -131,63 +131,64 @@ let changeArduinoLights = (rgb, active, id) => {
 }
 
 let runScene = (id) => {
-        // search for the scene with this id
-        let filterScene = scenes.filter(x => x.id === id);
-        filterScene = filterScene[0]; // grab the first result from the array (should only be one result)
+    // search for the scene with this id
+    let filterScene = scenes.filter(x => x.id === id);
+    filterScene = filterScene[0]; // grab the first result from the array (should only be one result)
 
-        filterScene.lights.forEach(x => {
-            // find the light 
-            let tempLight = lights.filter(y => y.id === x.id); // should only return one light
-            tempLight = tempLight[0];   // grab the first result
-            
-            // send the light to changeLight()
-            changeLight(tempLight);
-        });
+    filterScene.lights.forEach(x => {
+        // find the light 
+        let tempLight = lights.filter(y => y.id === x.id); // should only return one light
+        tempLight = tempLight[0]; // grab the first result
 
-
-
-        /*
-            FIREBASE SETTERS
-        */
+        // send the light to changeLight()
+        changeLight(tempLight);
+    });
+}
 
 
 
-
-
-        /* 
-            FIREBASE LISTENERS
-        */
-        // listen for changes to the lights
-        defaultDatabase.ref('/lights').on('value', (snap) => {
-            lights = snap.val();
-
-            lights.forEach(x => changeLight(x));
-            // for (let i = 0; i < lights.length; i++) {
-            //     changeLight(lights[i]);
-            // }
-        })
-
-        defaultDatabase.ref('/scenes').on('value', (snap) => {
-            scenes = snap.val();
-        })
+/*
+    FIREBASE SETTERS
+*/
 
 
 
-        /*
-            WEB SOCKETS
-        */
-        io.sockets.on('connection', (socket) => {
 
-            // send out required data to load the page
-            socket.emit('start', lights, scenes);
 
-            // return default db values
-            socket.on('initial-db-values', function () {
-                socket.emit('initial-db-values', dbInitialValues);
-            })
+/* 
+    FIREBASE LISTENERS
+*/
+// listen for changes to the lights
+defaultDatabase.ref('/lights').on('value', (snap) => {
+    lights = snap.val();
 
-            socket.on('run-scene', (id) => {
-                runScene(id);
-            })
+    lights.forEach(x => changeLight(x));
+    // for (let i = 0; i < lights.length; i++) {
+    //     changeLight(lights[i]);
+    // }
+})
 
-        })
+defaultDatabase.ref('/scenes').on('value', (snap) => {
+    scenes = snap.val();
+})
+
+
+
+/*
+    WEB SOCKETS
+*/
+io.sockets.on('connection', (socket) => {
+
+    // send out required data to load the page
+    socket.emit('start', lights, scenes);
+
+    // return default db values
+    socket.on('initial-db-values', function () {
+        socket.emit('initial-db-values', dbInitialValues);
+    })
+
+    socket.on('run-scene', (id) => {
+        runScene(id);
+    })
+
+})
