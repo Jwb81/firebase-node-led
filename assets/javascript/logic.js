@@ -179,7 +179,7 @@ $('#lighting-groups').on('change', '.lighting-group-checkbox', function () {
 })
 
 $('#light-scenes').on('click', '.scene-btn', function() {
-
+    console.log($(this).data('scene-id'));
     socket.emit('run-scene', $(this).data('scene-id'));
     
     // let val = $(this).data('scene-id');
