@@ -133,7 +133,7 @@ defaultDatabase.ref('/lights').on('value', (snap) => {
     for (let i = 0; i < lights.length; i++) {
         let rgb = {
             red: lights[i].red,
-            greeb: lights[i].green,
+            green: lights[i].green,
             blue: lights[i].blue
         }
 
