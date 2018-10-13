@@ -193,3 +193,14 @@ io.sockets.on('connection', (socket) => {
     })
 
 })
+
+
+
+
+process.on('SIGINT', function () { //on ctrl+c
+    ledRed.digitalWrite(off); // Turn RED LED off
+    ledGreen.digitalWrite(off); // Turn GREEN LED off
+    ledBlue.digitalWrite(off); // Turn BLUE LED off
+    process.exit(); //exit completely
+});
+
