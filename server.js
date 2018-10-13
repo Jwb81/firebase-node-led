@@ -161,7 +161,7 @@ defaultDatabase.ref('/scenes').on('value', (snap) => {
 io.sockets.on('connection', (socket) => {
 
     // send out required data to load the page
-    socket.emit('start');
+    socket.emit('start', lights, scenes);
 
     // return default db values
     socket.on('initial-db-values', function () {
