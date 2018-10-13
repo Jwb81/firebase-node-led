@@ -139,8 +139,8 @@ defaultDatabase.ref('/lights').on('value', (snap) => {
 
         // set all the lights to the approriate colors
         if (lights[i].machine === 'arduino') {
-            changeArduinoLights(rgb, lights[0].active, lights[i].id);
-        } else if (lights[i].machine === 'pi' && lights.id == secrets.pi_num) {
+            changeArduinoLights(rgb, lights[i].active, lights[i].id);
+        } else if (lights[i].machine === 'pi' && lights[i].id == secrets.pi_num) {
             changePiLights(rgb, lights[i].active);
         } else {
             console.log(`Something didn't match up...`);
