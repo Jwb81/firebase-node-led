@@ -142,6 +142,7 @@ let runScene = (id) => {
         // create a temp scene with the machine value
         let tempObj = Object.assign(x);
         tempObj.machine = tempLight[0].machine;
+        tempObj.active = tempLight[0].active;
 
         console.log(tempObj);
 
