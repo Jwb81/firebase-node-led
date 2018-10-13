@@ -178,15 +178,18 @@ $('#lighting-groups').on('change', '.lighting-group-checkbox', function () {
 })
 
 $('#light-scenes').on('click', '.scene-btn', function() {
-    let val = $(this).data('scene-id');
-    let arr = scenes[val].lights;
-    arr.forEach(x => {
-        rgb.red = x.red;
-        rgb.green = x.green;
-        rgb.blue = x.blue;
 
-        socket.emit("rgb", rgb, true, [x.id]);
-    })
+    socket.emit('run-scene', $(this).data('scene-id'));
+    
+    // let val = $(this).data('scene-id');
+    // let arr = scenes[val].lights;
+    // arr.forEach(x => {
+    //     rgb.red = x.red;
+    //     rgb.green = x.green;
+    //     rgb.blue = x.blue;
+
+    //     socket.emit("rgb", rgb, true, [x.id]);
+    // })
 })
 
 $('#light-scenes').on('click', '.scene-info-btn', function() {

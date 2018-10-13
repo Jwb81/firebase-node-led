@@ -112,6 +112,9 @@ let changeArduinoLights = (rgb, active, id) => {
     })
 }
 
+let runScene = (id) => {
+
+}
 
 
 
@@ -166,6 +169,10 @@ io.sockets.on('connection', (socket) => {
     // return default db values
     socket.on('initial-db-values', function () {
         socket.emit('initial-db-values', dbInitialValues);
+    })
+
+    socket.on('run-scene', (id) => {
+        runScene(id);
     })
 
 })
