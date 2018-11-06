@@ -42,6 +42,8 @@ admin.initializeApp({
     databaseURL: "https://node-led.firebaseio.com"
 });
 
+const db = admin.database()
+
 
 /*
 VARIABLES
@@ -139,6 +141,13 @@ let runScene = (id) => {
     filterScene.lights.forEach(x => {
         // find the light 
         let tempLight = lights.filter(y => y.id === x.id); // should only return one light
+
+        if (!tempLight.length) {
+            return
+        }
+
+        // update the lights in the database
+        db.ref(`/lights/${tempLight[0].id}`).update(x)
         
         // create a temp scene with the machine value
         let tempObj = Object.assign(x);
