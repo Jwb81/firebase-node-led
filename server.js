@@ -15,7 +15,7 @@ var Gpio = require('pigpio').Gpio, //include pigpio to interact with the GPIO
         mode: Gpio.OUTPUT
     }),
     ledBlue = new Gpio(24, {
-        mode: Gpio.OUTPUT
+        mode: Gpio.OUTPUT 
     });
 
 // for communicating with the attached Arduino over serial comm
@@ -100,7 +100,8 @@ let changeLight = (lumen) => {
     } else if (lumen.machine === 'pi' && lumen.id == secrets.pi_num) {
         changePiLights(rgb, lumen.active);
     } else {
-        console.log(`Something didn't match up...`);
+        // console.log(`Something didn't match up...`);
+        // ignore this command
     }
 }
 
